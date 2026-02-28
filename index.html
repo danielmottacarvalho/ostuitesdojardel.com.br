@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Os tuítes do Jardel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Goudy+Bookletter+1911&family=Google+Sans:wght@400;500;700&family=Google+Sans+Code:wght@500&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset ───────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; }
+    button { cursor: pointer; border: none; background: none; }
+
+    /* ── Tokens ──────────────────────────────────────────────── */
+    :root {
+      --bg:         #F6F4F2;
+      --black:      #0A0A0A;
+      --grey-900:   #212121;
+      --grey-800:   #424242;
+      --grey-600:   #757575;
+      --grey-500:   #9E9E9E;
+      --grey-400:   #BDBDBD;
+      --white:      #FFFFFF;
+      --border:     #E0E0E0;
+      --coral:      #FF846B;
+      --coral-dark: #FF694A;
+
+      --font-display: 'Goudy Bookletter 1911', Georgia, serif;
+      --font-body:    'Google Sans', system-ui, -apple-system, sans-serif;
+      --font-code:    'Google Sans Code', 'Courier New', monospace;
+      --blue:         #2B8AE3;
+      --blue-bg:      #E6F4FE;
+    }
+
+    /* ── Base ────────────────────────────────────────────────── */
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--grey-900);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ── Page shell ──────────────────────────────────────────── */
+    .page {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       HEADER
+    ══════════════════════════════════════════════════════════ */
+    .header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 24px 56px;
+      gap: 24px;
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+    }
+    .logo img { height: 40px; width: auto; display: block; }
+
+    .nav {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 24px;
+    }
+    .nav a {
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.272;
+      letter-spacing: -0.02em;
+      color: var(--grey-900);
+    }
+    .nav a:hover { text-decoration: underline; }
+
+    /* ══════════════════════════════════════════════════════════
+       HERO
+    ══════════════════════════════════════════════════════════ */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      align-self: stretch;
+      gap: 8px;
+      padding: 104px 0 0;
+      width: 100%;
+    }
+
+    /* Title + description */
+    .hero-heading {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      align-self: stretch;
+      gap: 8px;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: 64px;
+      font-weight: 400;
+      line-height: 1.36;
+      letter-spacing: -0.02em;
+      text-align: center;
+      color: var(--grey-900);
+    }
+
+    .hero-desc-wrap {
+      display: flex;
+      max-width: 800px;
+      width: 100%;
+    }
+
+    .hero-desc {
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.173;
+      letter-spacing: -0.01em;
+      text-align: center;
+      color: var(--grey-900);
+    }
+
+    /* Featured tweet card */
+    .tweet-card-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 40px 0 16px;
+    }
+
+    .tweet-destaque {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      padding: 24px;
+      width: 800px;
+      background: var(--white);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      border-radius: 16px;
+    }
+
+    .tweet-body {
+      display: flex;
+      flex-direction: row;
+      align-self: stretch;
+      gap: 16px;
+    }
+
+    .tweet-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: var(--grey-400);
+    }
+
+    .tweet-body-text {
+      display: flex;
+      flex-direction: row;
+      justify-content: stretch;
+      align-items: stretch;
+      gap: 24px;
+      flex: 1;
+    }
+
+    .tweet-text-destaque {
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 1.333;
+      letter-spacing: -0.02em;
+      color: var(--grey-900);
+      flex: 1;
+    }
+
+    .tweet-meta-row {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      align-self: stretch;
+      gap: 24px;
+      padding-left: 72px;
+    }
+
+    .tweet-likes {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tweet-likes svg { flex-shrink: 0; transform: translateY(-0.5px); }
+
+    .tweet-meta-text {
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.366;
+      color: var(--grey-600);
+    }
+
+    .tweet-date {
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.366;
+      color: var(--grey-600);
+    }
+
+    /* CTA button */
+    .btn-wrap {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      width: 960px;
+    }
+
+    .btn-cta {
+      display: inline-flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 32px;
+      background: var(--blue-bg);
+      border-radius: 9999px;
+      border: 1px solid var(--blue);
+      font-family: var(--font-code);
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 1.252;
+      letter-spacing: 0;
+      color: var(--blue);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+    .btn-cta:hover { background: var(--blue); color: #fff; }
+
+    /* ══════════════════════════════════════════════════════════
+       SEARCH SECTION
+    ══════════════════════════════════════════════════════════ */
+    .search-section {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: flex-start;
+      align-self: stretch;
+      gap: 8px;
+      padding: 64px 8px 0;
+      width: 100%;
+    }
+
+    .search-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      width: 600px;
+    }
+
+    .search-label {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 1.36;
+      text-align: center;
+      color: var(--grey-900);
+    }
+
+    .search-input-wrap {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      align-self: stretch;
+      gap: 8px;
+      padding: 16px 24px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--white);
+      transition: border-color 0.15s;
+    }
+    .search-input-wrap:focus-within { border-color: var(--grey-900); }
+
+    .search-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-family: var(--font-body);
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.272;
+      color: var(--grey-900);
+      background: transparent;
+    }
+    .search-input::placeholder { color: var(--grey-400); }
+
+    .search-submit {
+      display: flex;
+      align-items: center;
+      color: var(--grey-900);
+      transition: color 0.15s;
+      padding: 0;
+    }
+    .search-submit:hover { color: var(--coral); }
+
+    /* Search results */
+    .search-results {
+      display: none;
+      flex-direction: column;
+      width: 100%;
+      max-width: 960px;
+      padding: 0 0 52px;
+    }
+    .search-results.visible { display: flex; }
+
+    .search-results-meta {
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--grey-600);
+      padding-bottom: 16px;
+      padding-left: 4px;
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       CATEGORY CARDS
+    ══════════════════════════════════════════════════════════ */
+    .categories-section {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      align-self: stretch;
+      gap: 8px;
+      padding: 64px 8px 104px;
+      width: 100%;
+    }
+
+    .categories-label {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 1.36;
+      text-align: center;
+      color: var(--grey-900);
+    }
+
+    .cards-grid {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      padding: 0 88px;
+      max-width: 800px;
+      width: 100%;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
+      padding: 24px;
+      width: 200px;
+      border: none;
+      border-radius: 16px;
+      color: var(--grey-900);
+      background: transparent;
+      transition: background 0.2s;
+    }
+    .card:hover {
+      background: var(--white);
+    }
+
+    .card-inner {
+      display: flex;
+      flex-direction: column;
+      align-self: stretch;
+      gap: 24px;
+    }
+
+    .card-icon {
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+    }
+
+    /* "J" icon uses text, not SVG */
+    .card-icon-j {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 400;
+      line-height: 1;
+      color: currentColor;
+      width: 32px;
+      height: 32px;
+    }
+
+    .card-name {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.366;
+      letter-spacing: -0.01em;
+      align-self: stretch;
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       NORMAL TWEET (used in search results)
+    ══════════════════════════════════════════════════════════ */
+    .tweet-normal {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      padding: 24px 0;
+      align-self: stretch;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tweet-normal-body {
+      display: flex;
+      flex-direction: row;
+      align-self: stretch;
+      gap: 24px;
+    }
+
+    .tweet-text-normal {
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.333;
+      color: var(--grey-900);
+      flex: 1;
+    }
+
+    .tweet-normal-meta {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      align-self: stretch;
+      gap: 24px;
+    }
+
+    .tweet-normal-likes {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .tweet-meta-small {
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.366;
+      color: var(--grey-500);
+    }
+
+    /* ── Tweet links ─────────────────────────────────────── */
+    .tweet-link {
+      color: var(--blue);
+      text-decoration: none;
+      word-break: break-all;
+    }
+    .tweet-link:hover { text-decoration: underline; }
+
+    /* ══════════════════════════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════════════════════════ */
+    .footer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 56px;
+      background: var(--grey-900);
+      width: 100%;
+    }
+    .footer-main {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 56px;
+      width: 100%;
+    }
+    .footer-disclaimer {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 400;
+      color: #C0BAEF;
+      text-align: center;
+      margin-top: 48px;
+      width: 100%;
+    }
+    .footer-disclaimer a {
+      font-weight: 500;
+      color: #C0BAEF;
+      text-decoration: none;
+    }
+    .footer-disclaimer a:hover { color: #d6d1f5; text-decoration: underline; }
+
+    .footer-logo {
+      display: inline-flex;
+      align-items: center;
+    }
+    .footer-logo img { height: 40px; width: auto; display: block; filter: brightness(0) invert(1); }
+
+    .footer-links {
+      display: flex;
+      flex-direction: row;
+      gap: 56px;
+      flex: 1;
+      justify-content: flex-end;
+    }
+
+    .footer-col {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .footer-col-header {
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.272;
+      letter-spacing: -0.01em;
+      color: var(--grey-400);
+      margin-bottom: 4px;
+    }
+
+    .footer-col-divider {
+      display: none;
+    }
+
+    .footer-col a {
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 2em;
+      letter-spacing: -0.01em;
+      color: var(--bg);
+    }
+    .footer-col a:hover { text-decoration: none; font-weight: 700; }
+
+    /* ════════════════════════════════════════════════════════
+       HAMBURGER (hidden on desktop)
+    ════════════════════════════════════════════════════════ */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+    }
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--grey-900);
+      border-radius: 2px;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ── Mobile overlay menu ───────────────────────────────── */
+    .mobile-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #212121;
+      z-index: 999;
+      overflow-y: auto;
+      transform: translateY(-100%);
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .mobile-overlay.open { transform: translateY(0); }
+
+    .mobile-overlay-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      padding: 56px 40px;
+      min-height: 100%;
+    }
+    .mobile-overlay-top {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    .mobile-overlay-close {
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      min-height: unset;
+    }
+    .mobile-overlay-section {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+    }
+    .mobile-overlay-logo {
+      padding-bottom: 32px;
+    }
+    .mobile-overlay-logo img {
+      height: 56px;
+      width: auto;
+      filter: brightness(0) invert(1);
+    }
+    .mobile-overlay-heading {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: 40px;
+      line-height: 1.36em;
+      letter-spacing: -0.01em;
+      color: #FFFFFF;
+      text-decoration: none;
+      display: block;
+      min-height: auto;
+    }
+    .mobile-overlay-cat-items {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      padding-left: 12px;
+    }
+    .mobile-overlay-cat-items a {
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 1.272em;
+      letter-spacing: -0.01em;
+      color: #FFFFFF;
+      text-decoration: none;
+      display: block;
+      min-height: auto;
+    }
+    .mobile-overlay-cat-items a:hover,
+    a.mobile-overlay-heading:hover { opacity: 0.7; }
+
+    /* ════════════════════════════════════════════════════════
+       RESPONSIVE — TABLET (≤ 1023px)
+    ════════════════════════════════════════════════════════ */
+    @media (max-width: 1023px) {
+      .header { padding: 20px 32px; }
+      .hero { padding: 72px 24px; }
+      .tweet-destaque { width: 100%; max-width: 680px; }
+      .btn-wrap { width: 100%; }
+      .search-section { padding: 72px 24px 40px; }
+      .search-inner { width: 100%; max-width: 560px; }
+      .categories-section { padding: 40px 24px 72px; }
+      .cards-grid { padding: 0; max-width: 680px; }
+      .footer { padding: 48px 32px; gap: 40px; }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       RESPONSIVE — MOBILE (≤ 767px)
+    ════════════════════════════════════════════════════════ */
+    @media (max-width: 767px) {
+      /* Touch targets */
+      a { min-height: 48px; display: inline-flex; align-items: center; }
+
+      /* Header */
+      .header { padding: 16px 24px; }
+      .nav { display: none; }
+      .hamburger { display: flex; }
+
+      /* Hero */
+      .hero { padding: 48px 24px; gap: 12px; }
+      .hero-title { font-size: 40px; }
+      .hero-desc { font-size: 16px; }
+      .tweet-destaque { width: 100%; border-radius: 12px; padding: 16px; }
+      .tweet-text-destaque { font-size: 18px; }
+      .tweet-avatar { width: 44px; height: 44px; }
+      .tweet-meta-row { padding-left: 60px; }
+      .btn-wrap { width: 100%; align-items: center; }
+
+      /* Search */
+      .search-section { padding: 48px 24px 32px; }
+      .search-inner { width: 100%; }
+
+      /* Category cards — 2 columns */
+      .categories-section { padding: 32px 24px 64px; }
+      .cards-grid {
+        padding: 0;
+        max-width: 100%;
+        gap: 10px;
+      }
+      .card { width: calc(50% - 5px); padding: 16px; }
+
+      /* Search results */
+      .search-results { padding: 0 0 40px; max-width: 100%; }
+
+      /* Footer */
+      .footer { padding: 40px 24px; }
+      .footer-main { flex-direction: column; gap: 32px; }
+      .footer-disclaimer { margin-top: 32px; }
+      .footer-links { flex-direction: column; gap: 0; }
+      .footer-col-divider { display: block; border: none; border-top: 1px solid rgba(255,255,255,0.12); margin: 8px 0; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── Header ─────────────────────────────────────── -->
+  <header class="header">
+    <a href="index.html" class="logo">
+      <img src="images/logo.svg" alt="Os tuítes do Jardel">
+    </a>
+    <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav">
+      <a href="#categorias">Categorias</a>
+      <a href="sobre.html">Sobre o Projeto</a>
+      <a href="sobre-jardel.html">Sobre o Jardel</a>
+    </nav>
+  </header>
+  <!-- ── Mobile overlay menu ────────────────────────────── -->
+  <div class="mobile-overlay" id="mobile-overlay" aria-hidden="true">
+    <div class="mobile-overlay-inner">
+      <div class="mobile-overlay-top">
+        <button class="mobile-overlay-close" id="mobile-overlay-close" aria-label="Fechar menu">
+          <svg width="32" height="32" viewBox="263 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M294.531 29.2673C294.68 29.4159 294.798 29.5924 294.878 29.7866C294.959 29.9808 295 30.189 295 30.3992C295 30.6094 294.959 30.8176 294.878 31.0118C294.798 31.206 294.68 31.3825 294.531 31.5311C294.382 31.6798 294.206 31.7977 294.012 31.8781C293.818 31.9586 293.609 32 293.399 32C293.189 32 292.981 31.9586 292.787 31.8781C292.592 31.7977 292.416 31.6798 292.267 31.5311L279 18.2619L265.733 31.5311C265.433 31.8313 265.025 32 264.601 32C264.176 32 263.769 31.8313 263.469 31.5311C263.169 31.2309 263 30.8238 263 30.3992C263 29.9746 263.169 29.5675 263.469 29.2673L276.738 16L263.469 2.73274C263.169 2.43253 263 2.02536 263 1.6008C263 1.17624 263.169 0.769072 263.469 0.468863C263.769 0.168655 264.176 0 264.601 0C265.025 0 265.433 0.168655 265.733 0.468863L279 13.7381L292.267 0.468863C292.567 0.168655 292.975 -8.36906e-09 293.399 0C293.824 8.36906e-09 294.231 0.168655 294.531 0.468863C294.831 0.769072 295 1.17624 295 1.6008C295 2.02536 294.831 2.43253 294.531 2.73274L281.262 16L294.531 29.2673Z" fill="#F5F2EF"/>
+          </svg>
+        </button>
+      </div>
+      <div class="mobile-overlay-section">
+        <div class="mobile-overlay-logo">
+          <a href="index.html"><img src="images/logo.svg" alt="Os tuítes do Jardel"></a>
+        </div>
+        <span class="mobile-overlay-heading">Categorias</span>
+        <nav class="mobile-overlay-cat-items">
+          <a href="categoria.html?cat=Música">Música</a>
+          <a href="categoria.html?cat=Futebol">Futebol</a>
+          <a href="categoria.html?cat=Política">Política</a>
+          <a href="categoria.html?cat=Televisão">Televisão</a>
+          <a href="categoria.html?cat=Jornalismo">Jornalismo</a>
+          <a href="categoria.html?cat=São Paulo">São Paulo</a>
+
+          <a href="categoria.html?cat=Jardel">Jardel sendo Jardel</a>
+          <a href="categoria.html?cat=Todos">Todos</a>
+        </nav>
+      </div>
+      <div class="mobile-overlay-section">
+        <a href="sobre.html" class="mobile-overlay-heading">Sobre o Projeto</a>
+      </div>
+      <div class="mobile-overlay-section">
+        <a href="sobre-jardel.html" class="mobile-overlay-heading">Sobre o Jardel</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Hero ───────────────────────────────────────── -->
+  <section class="hero">
+
+    <div class="hero-heading">
+      <h1 class="hero-title">Jardel Sebba veio, viu e tuítou</h1>
+      <div class="hero-desc-wrap">
+        <p class="hero-desc">
+          Prolífico tuíteiro, ele deixou saudades e um bocado de tweets. 23.725, pra ser
+          exato. Aqui você pode encontrar todos eles e se lembrar da irreverência – palavra
+          favorita do Jards – que lhe era tão peculiar
+        </p>
+      </div>
+    </div>
+
+    <!-- Featured tweet -->
+    <div class="tweet-card-wrap">
+      <article class="tweet-destaque" id="featured-tweet" aria-label="Tweet em destaque">
+        <div class="tweet-body">
+          <img
+            class="tweet-avatar"
+            src="images/jardel-avatar.png"
+            alt="Jardel Sebba"
+            onerror="this.style.visibility='hidden'"
+          >
+          <div class="tweet-body-text">
+            <div style="flex:1">
+              <p class="tweet-text-destaque" id="feat-text"></p>
+            </div>
+          </div>
+        </div>
+        <div class="tweet-meta-row">
+          <div class="tweet-likes" id="feat-likes-wrap">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 21C12 21 3 15.5 3 9.5C3 7.015 5.015 5 7.5 5C9.023 5 10.371 5.764 11.197 6.94L12 8l.803-1.06C13.629 5.764 14.977 5 16.5 5C18.985 5 21 7.015 21 9.5C21 15.5 12 21 12 21Z"
+                fill="#BDBDBD"/>
+            </svg>
+            <span class="tweet-meta-text" id="feat-likes"></span>
+          </div>
+          <div class="tweet-date" id="feat-date"></div>
+        </div>
+      </article>
+    </div>
+
+    <div class="btn-wrap">
+      <button class="btn-cta" id="btn-fala-mais">Fala mais, Jards</button>
+    </div>
+
+  </section>
+
+  <!-- ── Search ─────────────────────────────────────── -->
+  <section class="search-section">
+    <div class="search-inner">
+      <p class="search-label">Procure nos tuítes do Jards</p>
+      <div class="search-input-wrap">
+        <input
+          type="search"
+          class="search-input"
+          id="search-input"
+          placeholder="Deve ter um tuíte sobre isso..."
+          autocomplete="off"
+          aria-label="Buscar tweets"
+        >
+        <button class="search-submit" id="search-btn" aria-label="Buscar">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Search results (shown dynamically) -->
+  <div class="search-results" id="search-results" aria-live="polite">
+    <p class="search-results-meta" id="search-meta"></p>
+    <div id="search-list"></div>
+  </div>
+
+  <!-- ── Categories ─────────────────────────────────── -->
+  <section class="categories-section" id="categorias">
+    <p class="categories-label">Navegue por categoria</p>
+    <div class="cards-grid">
+
+      <a href="categoria.html?cat=Música" class="card">
+        <div class="card-inner">
+          <img class="card-icon" src="images/icons/icon-musica.svg" width="32" height="32" aria-hidden="true">
+          <span class="card-name">Música</span>
+        </div>
+      </a>
+
+      <a href="categoria.html?cat=Futebol" class="card">
+        <div class="card-inner">
+          <img class="card-icon" src="images/icons/icon-futebol.svg" width="32" height="32" aria-hidden="true">
+          <span class="card-name">Futebol</span>
+        </div>
+      </a>
+
+      <a href="categoria.html?cat=Política" class="card">
+        <div class="card-inner">
+          <img class="card-icon" src="images/icons/icon-politica.svg" width="32" height="32" aria-hidden="true">
+          <span class="card-name">Política</span>
+        </div>
+      </a>
+
+      <a href="categoria.html?cat=Televisão" class="card">
+        <div class="card-inner">
+          <img class="card-icon" src="images/icons/icon-tv.svg" width="32" height="32" aria-hidden="true">
+          <span class="card-name">Televisão</span>
+        </div>
+      </a>
+
+      <a href="categoria.html?cat=Jornalismo" class="card">
+        <div class="card-inner">
+          <img class="card-icon" src="images/icons/icon-jornalismo.svg" width="32" height="32" aria-hidden="true">
+          <span class="card-name">Jornalismo</span>
+        </div>
+      </a>
+
+      <a href="categoria.html?cat=São Paulo" class="card">
+        <div class="card-inner">
+          <img class="card-icon" src="images/icons/icon-saopaulo.svg" width="32" height="32" aria-hidden="true">
+          <span class="card-name">São Paulo</span>
+        </div>
+      </a>
+
+      <a href="categoria.html?cat=Jardel" class="card">
+        <div class="card-inner">
+          <img class="card-icon" src="images/icons/icon-jardel.svg" width="32" height="32" aria-hidden="true">
+          <span class="card-name">Jardel sendo Jardel</span>
+        </div>
+      </a>
+
+
+    </div>
+  </section>
+
+  <!-- ── Footer ─────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="footer-main">
+      <a href="index.html" class="footer-logo">
+        <img src="images/logo.svg" alt="Os tuítes do Jardel">
+      </a>
+      <div class="footer-links">
+        <div class="footer-col">
+          <span class="footer-col-header">Categorias</span>
+          <a href="categoria.html?cat=Futebol">Futebol</a>
+          <a href="categoria.html?cat=Música">Música</a>
+          <a href="categoria.html?cat=Política">Política</a>
+          <a href="categoria.html?cat=Televisão">Televisão</a>
+          <a href="categoria.html?cat=Jornalismo">Jornalismo</a>
+          <a href="categoria.html?cat=São Paulo">São Paulo</a>
+
+          <a href="categoria.html?cat=Jardel">Jardel sendo Jardel</a>
+        </div>
+        <div class="footer-col footer-col-sobre">
+          <hr class="footer-col-divider">
+          <a href="sobre.html">Sobre o projeto</a>
+          <hr class="footer-col-divider">
+          <a href="sobre-jardel.html">Sobre o Jardel</a>
+        </div>
+      </div>
+    </div>
+    <p class="footer-disclaimer">Jardel aprovaria este site. Provavelmente. Feito mesmo assim por <a href="https://www.motta.works/" target="_blank" rel="noopener noreferrer">Daniel Motta</a>.</p>
+  </footer>
+
+</div><!-- /.page -->
+
+<script src="data.js"></script>
+<script>
+  /* ── Utilities ──────────────────────────────────────────── */
+  const MONTHS = [
+    'Janeiro','Fevereiro','Março','Abril','Maio','Junho',
+    'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'
+  ];
+
+  function fmtDate(iso) {
+    const d = new Date(iso);
+    return `${d.getDate()} de ${MONTHS[d.getMonth()]} de ${d.getFullYear()}`;
+  }
+
+  function fmtLikes(n) {
+    return n > 0 ? n.toLocaleString('pt-BR') + ' curtidas' : '';
+  }
+
+  function esc(str) {
+    return str
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function linkify(str) {
+    return esc(str).replace(
+      /(https?:\/\/[^\s<>"]+)/g,
+      '<a href="$1" target="_blank" rel="noopener noreferrer" class="tweet-link">$1</a>'
+    );
+  }
+
+  /* ── Featured tweet ─────────────────────────────────────── */
+  const pool = tweetData.filter(t => t.type === 'Tweet' && t.text.length > 60);
+
+  // Start on the most-liked tweet
+  let currentIdx = pool.reduce(
+    (best, t, i, arr) => t.likes > arr[best].likes ? i : best, 0
+  );
+
+  function showFeatured(tweet) {
+    document.getElementById('feat-text').innerHTML = linkify(tweet.text);
+    document.getElementById('feat-date').textContent = fmtDate(tweet.date);
+    const likesEl   = document.getElementById('feat-likes');
+    const likesWrap = document.getElementById('feat-likes-wrap');
+    if (tweet.likes > 0) {
+      likesEl.textContent = fmtLikes(tweet.likes);
+      likesWrap.style.display = '';
+    } else {
+      likesWrap.style.display = 'none';
+    }
+  }
+
+  showFeatured(pool[currentIdx]);
+
+  // "Fala mais, Jards" → random new tweet, no scroll, smooth transition
+  const card = document.getElementById('featured-tweet');
+
+  document.getElementById('btn-fala-mais').addEventListener('click', () => {
+    if (pool.length <= 1) return;
+    let newIdx;
+    do { newIdx = Math.floor(Math.random() * pool.length); }
+    while (newIdx === currentIdx);
+
+    // Fade + drift out
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(-6px)';
+
+    setTimeout(() => {
+      currentIdx = newIdx;
+      showFeatured(pool[currentIdx]);
+
+      // Reset position instantly (below), then fade in
+      card.style.transition = 'none';
+      card.style.transform = 'translateY(6px)';
+
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        card.style.transition = '';
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+      }));
+    }, 200);
+  });
+
+  /* ── Search ─────────────────────────────────────────────── */
+  const input     = document.getElementById('search-input');
+  const btn       = document.getElementById('search-btn');
+  const panel     = document.getElementById('search-results');
+  const meta      = document.getElementById('search-meta');
+  const list      = document.getElementById('search-list');
+
+  function makeTweetNormal(t) {
+    return `
+      <article class="tweet-normal">
+        <div class="tweet-normal-body">
+          <p class="tweet-text-normal">${linkify(t.text)}</p>
+        </div>
+        <div class="tweet-normal-meta">
+          <div class="tweet-normal-likes">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 21C12 21 3 15.5 3 9.5C3 7.015 5.015 5 7.5 5C9.023 5 10.371 5.764 11.197 6.94L12 8l.803-1.06C13.629 5.764 14.977 5 16.5 5C18.985 5 21 7.015 21 9.5C21 15.5 12 21 12 21Z"
+                stroke="#9E9E9E" stroke-width="1.5" stroke-linejoin="round"/>
+            </svg>
+            <span class="tweet-meta-small">${t.likes > 0 ? fmtLikes(t.likes) : ''}</span>
+          </div>
+          <span class="tweet-meta-small">${fmtDate(t.date)}</span>
+        </div>
+      </article>`;
+  }
+
+  function runSearch(q) {
+    q = q.trim();
+    if (!q) { panel.classList.remove('visible'); return; }
+
+    const hits = tweetData
+      .filter(t => t.type === 'Tweet' && t.text.toLowerCase().includes(q.toLowerCase()))
+      .slice(0, 50);
+
+    meta.textContent = hits.length === 0
+      ? `Sua busca por "${q}" não deu resultados.`
+      : `Sua busca por "${q}" deu ${hits.length.toLocaleString('pt-BR')} resultado${hits.length !== 1 ? 's' : ''}.`;
+
+    list.innerHTML = hits.map(makeTweetNormal).join('');
+    panel.classList.add('visible');
+    panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  btn.addEventListener('click', () => runSearch(input.value));
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') runSearch(input.value); });
+  input.addEventListener('input', e => { if (!e.target.value) panel.classList.remove('visible'); });
+
+  /* ── Hamburger / Mobile Overlay ─────────────────────────── */
+  const hamburger    = document.getElementById('hamburger');
+  const overlay      = document.getElementById('mobile-overlay');
+  const overlayClose = document.getElementById('mobile-overlay-close');
+
+  function openOverlay() {
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    hamburger.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeOverlay() {
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    hamburger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  hamburger.addEventListener('click', openOverlay);
+  overlayClose.addEventListener('click', closeOverlay);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeOverlay(); });
+</script>
+</body>
+</html>

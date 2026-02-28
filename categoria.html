@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Categoria — Os tuítes do Jardel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Goudy+Bookletter+1911&family=Google+Sans:wght@400;500;700&family=Google+Sans+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; }
+    button { cursor: pointer; border: none; background: none; }
+
+    /* ── Tokens ─────────────────────────────────────────────── */
+    :root {
+      --bg:          #F6F4F2;
+      --black:       #0A0A0A;
+      --grey-900:    #212121;
+      --grey-800:    #424242;
+      --grey-600:    #757575;
+      --grey-500:    #9E9E9E;
+      --grey-400:    #BDBDBD;
+      --white:       #FFFFFF;
+      --border:      #E0E0E0;
+      --blue:        #2B8AE3;
+      --blue-bg:     #E6F4FE;
+      --font-display: 'Goudy Bookletter 1911', Georgia, serif;
+      --font-body:    'Google Sans', system-ui, -apple-system, sans-serif;
+      --font-code:    'Google Sans Code', 'Courier New', monospace;
+    }
+
+    /* ── Base ───────────────────────────────────────────────── */
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--grey-900);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       HEADER
+    ════════════════════════════════════════════════════════ */
+    .page { max-width: 1440px; margin: 0 auto; display: flex; flex-direction: column; }
+
+    .header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 24px 56px;
+      gap: 24px;
+    }
+    .logo { display: inline-flex; align-items: center; }
+    .logo img { height: 40px; width: auto; display: block; }
+
+    .nav { display: flex; flex-direction: row; align-items: center; gap: 24px; }
+    .nav a { font-size: 16px; font-weight: 400; letter-spacing: -0.02em; color: var(--grey-900); }
+    .nav a:hover { text-decoration: underline; }
+
+    /* Hamburger (hidden on desktop) */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+    }
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--grey-900);
+      border-radius: 2px;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ── Mobile overlay menu ───────────────────────────────── */
+    .mobile-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #212121;
+      z-index: 999;
+      overflow-y: auto;
+      transform: translateY(-100%);
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .mobile-overlay.open { transform: translateY(0); }
+
+    .mobile-overlay-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      padding: 56px 40px;
+      min-height: 100%;
+    }
+    .mobile-overlay-top {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    .mobile-overlay-close {
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      min-height: unset;
+    }
+    .mobile-overlay-section {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+    }
+    .mobile-overlay-logo {
+      padding-bottom: 32px;
+    }
+    .mobile-overlay-logo img {
+      height: 56px;
+      width: auto;
+      filter: brightness(0) invert(1);
+    }
+    .mobile-overlay-heading {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: 40px;
+      line-height: 1.36em;
+      letter-spacing: -0.01em;
+      color: #FFFFFF;
+      text-decoration: none;
+      display: block;
+      min-height: auto;
+    }
+    .mobile-overlay-cat-items {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      padding-left: 12px;
+    }
+    .mobile-overlay-cat-items a {
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 1.272em;
+      letter-spacing: -0.01em;
+      color: #FFFFFF;
+      text-decoration: none;
+      display: block;
+      min-height: auto;
+    }
+    .mobile-overlay-cat-items a:hover,
+    a.mobile-overlay-heading:hover { opacity: 0.7; }
+
+    /* ════════════════════════════════════════════════════════
+       MOBILE CATEGORY STRIP (hidden on desktop)
+    ════════════════════════════════════════════════════════ */
+    .mobile-cat-strip {
+      display: none;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      gap: 8px;
+      padding: 12px 24px;
+      border-bottom: 1px solid var(--border);
+      scrollbar-width: none;
+    }
+    .mobile-cat-strip::-webkit-scrollbar { display: none; }
+
+    .mobile-cat-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 9999px;
+      border: 1px solid var(--border);
+      background: var(--white);
+      color: var(--grey-600);
+      font-size: 13px;
+      font-weight: 700;
+      font-family: var(--font-body);
+      white-space: nowrap;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .mobile-cat-btn.active,
+    .mobile-cat-btn:hover {
+      background: var(--blue-bg);
+      color: var(--blue);
+      border-color: var(--blue);
+    }
+    .mobile-cat-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+
+    /* ════════════════════════════════════════════════════════
+       PAGE CONTENT (two-column)
+    ════════════════════════════════════════════════════════ */
+    .page-content {
+      display: flex;
+      flex-direction: row;
+      gap: 88px;
+      padding: 104px 88px 104px 40px;
+      align-items: flex-start;
+      width: 100%;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       SIDEBAR
+    ════════════════════════════════════════════════════════ */
+    .sidebar {
+      width: 300px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: sticky;
+      top: 24px;
+      max-height: calc(100vh - 48px);
+      overflow-y: auto;
+      scrollbar-width: none;
+    }
+    .sidebar::-webkit-scrollbar { display: none; }
+
+    .sidebar-nav-label {
+      font-family: var(--font-code);
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--grey-800);
+      line-height: 1.252em;
+    }
+
+    .cat-nav { display: flex; flex-direction: column; gap: 4px; }
+
+    /* Sidebar top section: cat title + quote + search */
+    .sidebar-cat-header {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .sidebar-cat-main {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .cat-btn {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+      padding: 8px;
+      border-radius: 8px;
+      width: 100%;
+      color: var(--grey-600);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 400;
+      font-family: var(--font-body);
+      letter-spacing: -0.01em;
+      transition: background 0.15s, color 0.15s;
+    }
+    .cat-btn:hover { background: var(--blue-bg); color: var(--blue); }
+    .cat-btn.active { background: var(--blue-bg); color: var(--blue); font-weight: 500; }
+    .cat-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+    .cat-btn-j {
+      font-family: var(--font-display);
+      font-size: 16px;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* Sidebar search */
+    .sidebar-search-wrap {
+      display: flex;
+      flex-direction: row;
+      gap: 6px;
+      align-items: center;
+    }
+    .sidebar-search-input {
+      flex: 1;
+      height: 32px;
+      padding: 0 10px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--grey-900);
+      background: var(--white);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .sidebar-search-input:focus { border-color: var(--blue); }
+    .sidebar-search-input::placeholder { color: var(--grey-400); }
+
+    .sidebar-search-btn {
+      height: 32px;
+      padding: 0 10px;
+      border: 1px solid var(--blue);
+      border-radius: 4px;
+      background: var(--white);
+      color: var(--blue);
+      font-family: var(--font-code);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s, color 0.15s;
+    }
+    .sidebar-search-btn:hover { background: var(--blue); color: var(--white); }
+
+    .sidebar-quote {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--grey-900);
+      line-height: 1.272em;
+      letter-spacing: -0.01em;
+    }
+    .sidebar-quote-date {
+      font-size: 13px;
+      color: var(--grey-500);
+    }
+
+    /* Mobile-only cat title (shown when sidebar is hidden) */
+    .cat-title-mobile {
+      font-family: var(--font-display);
+      font-size: 36px;
+      font-weight: 400;
+      line-height: 1.36em;
+      letter-spacing: -0.02em;
+      color: #000;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       MAIN AREA
+    ════════════════════════════════════════════════════════ */
+    .main-area { flex: 1; min-width: 0; }
+
+    /* Category title block */
+    .main-header { padding-bottom: 24px; }
+
+    .cat-title {
+      font-family: var(--font-display);
+      font-size: 64px;
+      font-weight: 400;
+      line-height: 1.36em;
+      letter-spacing: -0.02em;
+      color: #000;
+    }
+
+    .cat-quote-main {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--grey-600);
+      line-height: 1.4em;
+      letter-spacing: -0.01em;
+      margin-top: 8px;
+    }
+
+    /* Toolbar */
+    .results-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 14px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 0;
+      gap: 16px;
+    }
+
+    .tweet-count {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--grey-600);
+    }
+
+    .sort-select {
+      font-family: var(--font-code);
+      font-size: 12px;
+      color: var(--grey-900);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 5px 10px;
+      background: var(--white);
+      cursor: pointer;
+      outline: none;
+    }
+    .sort-select:focus { border-color: var(--blue); }
+
+    /* ── Tweet normal ──────────────────────────────────────── */
+    .tweet-normal {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tweet-text {
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.333em;
+      color: var(--grey-900);
+    }
+
+    .tweet-meta {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .tweet-meta-likes {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+    }
+    .tweet-meta-likes svg { flex-shrink: 0; transform: translateY(-0.5px); }
+
+    .tweet-meta-text {
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.366em;
+      color: var(--grey-500);
+    }
+
+    .tweet-link {
+      color: var(--blue);
+      text-decoration: none;
+      word-break: break-all;
+    }
+    .tweet-link:hover { text-decoration: underline; }
+
+    /* Load more */
+    .load-more-wrap {
+      display: flex;
+      justify-content: center;
+      padding: 32px 0 16px;
+    }
+    .btn-load-more {
+      display: inline-flex;
+      align-items: center;
+      padding: 12px 32px;
+      background: var(--blue-bg);
+      border-radius: 9999px;
+      border: 1px solid var(--blue);
+      font-family: var(--font-code);
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--blue);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+    .btn-load-more:hover { background: var(--blue); color: var(--white); }
+    .btn-load-more.hidden { display: none; }
+
+    /* ── Search results state ─────────────────────────────── */
+    .search-state { display: none; }
+    .search-state.visible { display: block; }
+
+    .browse-state.hidden { display: none; }
+
+    .search-results-title {
+      font-family: var(--font-display);
+      font-size: 40px;
+      font-weight: 400;
+      line-height: 1.36em;
+      letter-spacing: -0.02em;
+      color: #000;
+      padding-bottom: 8px;
+    }
+
+    .search-results-meta {
+      font-size: 14px;
+      color: var(--grey-600);
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* No results card */
+    .no-results-card {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 88px 24px;
+      background: var(--white);
+      border-radius: 16px;
+      margin-top: 24px;
+      text-align: center;
+    }
+    .no-results-card.visible { display: flex; }
+
+    .no-results-title {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 400;
+      color: #000;
+    }
+
+    .no-results-text {
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--grey-600);
+      max-width: 480px;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       FOOTER
+    ════════════════════════════════════════════════════════ */
+    .footer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 56px;
+      background: var(--grey-900);
+      width: 100%;
+    }
+    .footer-main {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 56px;
+      width: 100%;
+    }
+    .footer-logo { display: inline-flex; align-items: center; }
+    .footer-logo img { height: 40px; width: auto; display: block; filter: brightness(0) invert(1); }
+    .footer-links { display: flex; flex-direction: row; gap: 56px; flex: 1; justify-content: flex-end; }
+    .footer-col { display: flex; flex-direction: column; width: 100%; }
+    .footer-col-header { font-size: 14px; font-weight: 700; color: var(--grey-400); margin-bottom: 4px; }
+    .footer-col a { font-size: 14px; font-weight: 500; line-height: 2em; color: var(--bg); }
+    .footer-col a:hover { text-decoration: none; font-weight: 700; }
+    .footer-col-divider { display: none; }
+    .footer-disclaimer {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 400;
+      color: #C0BAEF;
+      text-align: center;
+      margin-top: 48px;
+      width: 100%;
+    }
+    .footer-disclaimer a {
+      font-weight: 500;
+      color: #C0BAEF;
+      text-decoration: none;
+    }
+    .footer-disclaimer a:hover { color: #d6d1f5; text-decoration: underline; }
+
+    /* ════════════════════════════════════════════════════════
+       RESPONSIVE — TABLET (≤ 1023px)
+    ════════════════════════════════════════════════════════ */
+    @media (max-width: 1023px) {
+      .page-content {
+        gap: 48px;
+        padding: 64px 40px 64px 32px;
+      }
+      .sidebar { width: 240px; }
+      .cat-title { font-size: 48px; }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       RESPONSIVE — MOBILE (≤ 767px)
+    ════════════════════════════════════════════════════════ */
+    @media (max-width: 767px) {
+      /* Touch targets */
+      a { min-height: 48px; display: inline-flex; align-items: center; }
+
+      /* Header */
+      .header { padding: 16px 24px; }
+      .nav { display: none; }
+      .hamburger { display: flex; }
+
+      /* Show mobile strips */
+      .mobile-cat-strip { display: flex; }
+
+      /* Hide desktop sidebar */
+      .sidebar { display: none; }
+
+      /* Single-column layout */
+      .page-content {
+        flex-direction: column;
+        padding: 24px 24px 64px;
+        gap: 0;
+      }
+
+      .main-area { width: 100%; }
+
+      .cat-title { font-size: 36px; }
+      .cat-title-mobile { display: block; }
+      .search-results-title { font-size: 28px; }
+
+      .results-toolbar { flex-wrap: wrap; gap: 10px; }
+      .tweet-text { font-size: 16px; }
+
+      /* Footer */
+      .footer { padding: 40px 24px; }
+      .footer-main { flex-direction: column; gap: 32px; }
+      .footer-links { flex-direction: column; gap: 0; }
+      .footer-disclaimer { margin-top: 32px; }
+      .footer-col-divider { display: block; border: none; border-top: 1px solid rgba(255,255,255,0.12); margin: 8px 0; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── Header ──────────────────────────────────────────── -->
+  <header class="header">
+    <a href="index.html" class="logo">
+      <img src="images/logo.svg" alt="Os tuítes do Jardel">
+    </a>
+    <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav">
+      <a href="index.html#categorias">Categorias</a>
+      <a href="sobre.html">Sobre o Projeto</a>
+      <a href="sobre-jardel.html">Sobre o Jardel</a>
+    </nav>
+  </header>
+
+  <!-- ── Mobile overlay menu ────────────────────────────── -->
+  <div class="mobile-overlay" id="mobile-overlay" aria-hidden="true">
+    <div class="mobile-overlay-inner">
+      <div class="mobile-overlay-top">
+        <button class="mobile-overlay-close" id="mobile-overlay-close" aria-label="Fechar menu">
+          <svg width="32" height="32" viewBox="263 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M294.531 29.2673C294.68 29.4159 294.798 29.5924 294.878 29.7866C294.959 29.9808 295 30.189 295 30.3992C295 30.6094 294.959 30.8176 294.878 31.0118C294.798 31.206 294.68 31.3825 294.531 31.5311C294.382 31.6798 294.206 31.7977 294.012 31.8781C293.818 31.9586 293.609 32 293.399 32C293.189 32 292.981 31.9586 292.787 31.8781C292.592 31.7977 292.416 31.6798 292.267 31.5311L279 18.2619L265.733 31.5311C265.433 31.8313 265.025 32 264.601 32C264.176 32 263.769 31.8313 263.469 31.5311C263.169 31.2309 263 30.8238 263 30.3992C263 29.9746 263.169 29.5675 263.469 29.2673L276.738 16L263.469 2.73274C263.169 2.43253 263 2.02536 263 1.6008C263 1.17624 263.169 0.769072 263.469 0.468863C263.769 0.168655 264.176 0 264.601 0C265.025 0 265.433 0.168655 265.733 0.468863L279 13.7381L292.267 0.468863C292.567 0.168655 292.975 -8.36906e-09 293.399 0C293.824 8.36906e-09 294.231 0.168655 294.531 0.468863C294.831 0.769072 295 1.17624 295 1.6008C295 2.02536 294.831 2.43253 294.531 2.73274L281.262 16L294.531 29.2673Z" fill="#F5F2EF"/>
+          </svg>
+        </button>
+      </div>
+      <div class="mobile-overlay-section">
+        <div class="mobile-overlay-logo">
+          <a href="index.html"><img src="images/logo.svg" alt="Os tuítes do Jardel"></a>
+        </div>
+        <span class="mobile-overlay-heading">Categorias</span>
+        <nav class="mobile-overlay-cat-items">
+          <a href="categoria.html?cat=Música">Música</a>
+          <a href="categoria.html?cat=Futebol">Futebol</a>
+          <a href="categoria.html?cat=Política">Política</a>
+          <a href="categoria.html?cat=Televisão">Televisão</a>
+          <a href="categoria.html?cat=Jornalismo">Jornalismo</a>
+          <a href="categoria.html?cat=São Paulo">São Paulo</a>
+
+          <a href="categoria.html?cat=Jardel">Jardel sendo Jardel</a>
+          <a href="categoria.html?cat=Todos">Todos</a>
+        </nav>
+      </div>
+      <div class="mobile-overlay-section">
+        <a href="sobre.html" class="mobile-overlay-heading">Sobre o Projeto</a>
+      </div>
+      <div class="mobile-overlay-section">
+        <a href="sobre-jardel.html" class="mobile-overlay-heading">Sobre o Jardel</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Mobile category strip ───────────────────────────── -->
+  <div class="mobile-cat-strip" id="mobile-cat-strip"></div>
+
+
+  <!-- ── Two-column content ──────────────────────────────── -->
+  <div class="page-content">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <!-- Cat identity: title + quote + search -->
+      <div class="sidebar-cat-header">
+        <div class="sidebar-cat-main">
+          <h1 class="cat-title" id="cat-title"></h1>
+          <p class="sidebar-quote" id="sidebar-quote"></p>
+        </div>
+        <div class="sidebar-search-wrap">
+          <input
+            type="search"
+            class="sidebar-search-input"
+            id="sidebar-search"
+            placeholder="Deve ter um tuíte sobre isso..."
+            autocomplete="off"
+          >
+          <button class="sidebar-search-btn" id="sidebar-search-btn">Buscar</button>
+        </div>
+      </div>
+      <!-- Category nav -->
+      <p class="sidebar-nav-label">Navegue por categoria</p>
+      <nav class="cat-nav" id="sidebar-cat-nav"></nav>
+    </aside>
+
+    <!-- Main area -->
+    <main class="main-area">
+
+      <!-- Browse state (default) -->
+      <div class="browse-state" id="browse-state">
+        <h2 class="cat-title-mobile" id="cat-title-mobile"></h2>
+        <div class="results-toolbar">
+          <select class="sort-select" id="sort-select">
+            <option value="mais-curtidos">Mais curtidos</option>
+            <option value="menos-curtidos">Menos curtidos</option>
+            <option value="mais-recentes">2023 → 2009</option>
+            <option value="mais-antigos">2009 → 2023</option>
+            <option value="aleatorio">Aleatório</option>
+          </select>
+        </div>
+        <div id="tweet-list"></div>
+        <div class="load-more-wrap">
+          <button class="btn-load-more hidden" id="btn-load-more">Carregar mais</button>
+        </div>
+      </div>
+
+      <!-- Search results state -->
+      <div class="search-state" id="search-state">
+        <h2 class="search-results-title">Ele falou sobre isso, sim</h2>
+        <p class="search-results-meta" id="search-meta"></p>
+        <div id="search-list"></div>
+        <div class="no-results-card" id="no-results">
+          <p class="no-results-title">Jardel não passou por aqui</p>
+          <p class="no-results-text">Nenhum tweet encontrado. Raro, mas acontecia.</p>
+        </div>
+        <div class="load-more-wrap">
+          <button class="btn-load-more hidden" id="btn-search-more">Carregar mais</button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ── Footer ──────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="footer-main">
+      <a href="index.html" class="footer-logo">
+        <img src="images/logo.svg" alt="Os tuítes do Jardel">
+      </a>
+      <div class="footer-links">
+        <div class="footer-col">
+          <span class="footer-col-header">Categorias</span>
+          <a href="categoria.html?cat=Futebol">Futebol</a>
+          <a href="categoria.html?cat=Música">Música</a>
+          <a href="categoria.html?cat=Política">Política</a>
+          <a href="categoria.html?cat=Televisão">Televisão</a>
+          <a href="categoria.html?cat=Jornalismo">Jornalismo</a>
+          <a href="categoria.html?cat=São Paulo">São Paulo</a>
+
+          <a href="categoria.html?cat=Jardel">Jardel sendo Jardel</a>
+        </div>
+        <div class="footer-col footer-col-sobre">
+          <hr class="footer-col-divider">
+          <a href="sobre.html">Sobre o projeto</a>
+          <hr class="footer-col-divider">
+          <a href="sobre-jardel.html">Sobre o Jardel</a>
+        </div>
+      </div>
+    </div>
+    <p class="footer-disclaimer">Jardel aprovaria este site. Provavelmente. Feito mesmo assim por <a href="https://www.motta.works/" target="_blank" rel="noopener noreferrer">Daniel Motta</a>.</p>
+  </footer>
+
+</div><!-- /.page -->
+
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script>
+<script src="data.js"></script>
+<script>
+  /* ── Utilities ──────────────────────────────────────────── */
+  const MONTHS = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho',
+    'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+
+  function fmtDate(iso) {
+    const d = new Date(iso);
+    return `${d.getDate()} de ${MONTHS[d.getMonth()]} de ${d.getFullYear()}`;
+  }
+  function fmtLikes(n) {
+    return n > 0 ? n.toLocaleString('pt-BR') + ' curtidas' : '';
+  }
+  function esc(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function linkify(str) {
+    return esc(str).replace(
+      /(https?:\/\/[^\s<>"]+)/g,
+      '<a href="$1" target="_blank" rel="noopener noreferrer" class="tweet-link">$1</a>'
+    );
+  }
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+  function pluralTweet(n) {
+    return n.toLocaleString('pt-BR') + (n === 1 ? ' tweet' : ' tweets');
+  }
+
+  /* ── Category definitions ───────────────────────────────── */
+  const CATS = [
+    { cat: 'Música',     label: 'Música',             icon: `<svg viewBox="0 0 16 16" fill="none"><path d="M5 6C5 6.133 4.947 6.26 4.854 6.354C4.76 6.447 4.633 6.5 4.5 6.5H1.5C1.367 6.5 1.24 6.447 1.146 6.354C1.053 6.26 1 6.133 1 6C1 5.867 1.053 5.74 1.146 5.646C1.24 5.553 1.367 5.5 1.5 5.5H4.5C4.633 5.5 4.76 5.553 4.854 5.646C4.947 5.74 5 5.867 5 6ZM4.5 7.5H1.5C1.367 7.5 1.24 7.553 1.146 7.646C1.053 7.74 1 7.867 1 8C1 8.133 1.053 8.26 1.146 8.354C1.24 8.447 1.367 8.5 1.5 8.5H4.5C4.633 8.5 4.76 8.447 4.854 8.354C4.947 8.26 5 8.133 5 8C5 7.867 4.947 7.74 4.854 7.646C4.76 7.553 4.633 7.5 4.5 7.5ZM4.5 9.5H1.5C1.367 9.5 1.24 9.553 1.146 9.646C1.053 9.74 1 9.867 1 10C1 10.133 1.053 10.26 1.146 10.354C1.24 10.447 1.367 10.5 1.5 10.5H4.5C4.633 10.5 4.76 10.447 4.854 10.354C4.947 10.26 5 10.133 5 10C5 9.867 4.947 9.74 4.854 9.646C4.76 9.553 4.633 9.5 4.5 9.5ZM4.5 11.5H1.5C1.367 11.5 1.24 11.553 1.146 11.646C1.053 11.74 1 11.867 1 12C1 12.133 1.053 12.26 1.146 12.354C1.24 12.447 1.367 12.5 1.5 12.5H4.5C4.633 12.5 4.76 12.447 4.854 12.354C4.947 12.26 5 12.133 5 12C5 11.867 4.947 11.74 4.854 11.646C4.76 11.553 4.633 11.5 4.5 11.5ZM9.5 7.5H6.5C6.367 7.5 6.24 7.553 6.146 7.646C6.053 7.74 6 7.867 6 8C6 8.133 6.053 8.26 6.146 8.354C6.24 8.447 6.367 8.5 6.5 8.5H9.5C9.633 8.5 9.76 8.447 9.854 8.354C9.947 8.26 10 8.133 10 8C10 7.867 9.947 7.74 9.854 7.646C9.76 7.553 9.633 7.5 9.5 7.5ZM9.5 9.5H6.5C6.367 9.5 6.24 9.553 6.146 9.646C6.053 9.74 6 9.867 6 10C6 10.133 6.053 10.26 6.146 10.354C6.24 10.447 6.367 10.5 6.5 10.5H9.5C9.633 10.5 9.76 10.447 9.854 10.354C9.947 10.26 10 10.133 10 10C10 9.867 9.947 9.74 9.854 9.646C9.76 9.553 9.633 9.5 9.5 9.5ZM9.5 11.5H6.5C6.367 11.5 6.24 11.553 6.146 11.646C6.053 11.74 6 11.867 6 12C6 12.133 6.053 12.26 6.146 12.354C6.24 12.447 6.367 12.5 6.5 12.5H9.5C9.633 12.5 9.76 12.447 9.854 12.354C9.947 12.26 10 12.133 10 12C10 11.867 9.947 11.74 9.854 11.646C9.76 11.553 9.633 11.5 9.5 11.5ZM14.5 5.5H11.5C11.367 5.5 11.24 5.553 11.146 5.646C11.053 5.74 11 5.867 11 6C11 6.133 11.053 6.26 11.146 6.354C11.24 6.447 11.367 6.5 11.5 6.5H14.5C14.633 6.5 14.76 6.447 14.854 6.354C14.947 6.26 15 6.133 15 6C15 5.867 14.947 5.74 14.854 5.646C14.76 5.553 14.633 5.5 14.5 5.5ZM11.5 4.5H14.5C14.633 4.5 14.76 4.447 14.854 4.354C14.947 4.26 15 4.133 15 4C15 3.867 14.947 3.74 14.854 3.646C14.76 3.553 14.633 3.5 14.5 3.5H11.5C11.367 3.5 11.24 3.553 11.146 3.646C11.053 3.74 11 3.867 11 4C11 4.133 11.053 4.26 11.146 4.354C11.24 4.447 11.367 4.5 11.5 4.5ZM14.5 7.5H11.5C11.367 7.5 11.24 7.553 11.146 7.646C11.053 7.74 11 7.867 11 8C11 8.133 11.053 8.26 11.146 8.354C11.24 8.447 11.367 8.5 11.5 8.5H14.5C14.633 8.5 14.76 8.447 14.854 8.354C14.947 8.26 15 8.133 15 8C15 7.867 14.947 7.74 14.854 7.646C14.76 7.553 14.633 7.5 14.5 7.5ZM14.5 9.5H11.5C11.367 9.5 11.24 9.553 11.146 9.646C11.053 9.74 11 9.867 11 10C11 10.133 11.053 10.26 11.146 10.354C11.24 10.447 11.367 10.5 11.5 10.5H14.5C14.633 10.5 14.76 10.447 14.854 10.354C14.947 10.26 15 10.133 15 10C15 9.867 14.947 9.74 14.854 9.646C14.76 9.553 14.633 9.5 14.5 9.5ZM14.5 11.5H11.5C11.367 11.5 11.24 11.553 11.146 11.646C11.053 11.74 11 11.867 11 12C11 12.133 11.053 12.26 11.146 12.354C11.24 12.447 11.367 12.5 11.5 12.5H14.5C14.633 12.5 14.76 12.447 14.854 12.354C14.947 12.26 15 12.133 15 12C15 11.867 14.947 11.74 14.854 11.646C14.76 11.553 14.633 11.5 14.5 11.5Z" fill="currentColor"/></svg>` },
+    { cat: 'Futebol',    label: 'Futebol',            icon: `<svg viewBox="0 0 24 24" fill="none"><path d="M12 2.25C10.072 2.25 8.187 2.822 6.583 3.893C4.98 4.965 3.73 6.487 2.992 8.269C2.254 10.05 2.061 12.011 2.437 13.902C2.814 15.793 3.742 17.531 5.106 18.894C6.469 20.258 8.207 21.187 10.098 21.563C11.989 21.939 13.95 21.746 15.731 21.008C17.513 20.27 19.036 19.02 20.107 17.417C21.178 15.813 21.75 13.928 21.75 12C21.747 9.415 20.719 6.937 18.891 5.109C17.063 3.281 14.585 2.253 12 2.25ZM19.174 16.071H16.022L15.154 14.874L16.338 11.426L17.744 10.968L20.204 12.855C20.088 13.987 19.737 15.082 19.174 16.071ZM3.799 12.855L6.254 10.969L7.66 11.427L8.844 14.875L7.978 16.071H4.826C4.263 15.082 3.911 13.987 3.794 12.855H3.799ZM4.736 8.108L5.253 9.851L3.817 10.947C3.944 9.953 4.253 8.99 4.728 8.108H4.736ZM10.219 14.25L9.144 11.123L12 9.16L14.856 11.123L13.781 14.25H10.219ZM18.757 9.851L19.273 8.108C19.748 8.99 20.057 9.953 20.184 10.947L18.757 9.851ZM18.175 6.534L17.284 9.542L15.871 10L12.75 7.855V6.395L15.477 4.52C16.504 5 17.422 5.686 18.175 6.534H18.175ZM13.694 3.925L12 5.09L10.306 3.925C11.423 3.692 12.577 3.692 13.694 3.925ZM8.523 4.52L11.25 6.395V7.855L8.13 10L6.717 9.542L5.826 6.534C6.578 5.686 7.496 5 8.523 4.52ZM5.92 17.571H7.83L8.502 19.471C7.526 19.012 6.649 18.366 5.92 17.571ZM10.313 20.075L9.199 16.942L10.064 15.75H13.936L14.801 16.942L13.692 20.075C12.576 20.309 11.424 20.309 10.308 20.075H10.313ZM15.503 19.471L16.175 17.571H18.084C17.354 18.367 16.476 19.012 15.498 19.471H15.503Z" fill="currentColor"/></svg>` },
+    { cat: 'Política',   label: 'Política',           icon: `<svg viewBox="0 0 16 16" fill="none"><path d="M12.846 2.5C14.035 2.5 15 3.395 15 4.5V11.5C15 12.605 14.035 13.5 12.846 13.5H3.154L2.934 13.489C1.848 13.387 1 12.536 1 11.5V4.5C1 3.395 1.965 2.5 3.154 2.5H12.846ZM2.077 11.5C2.077 12.052 2.56 12.5 3.154 12.5H6.621L2.3 9.564C2.22 9.51 2.146 9.45 2.077 9.389V11.5ZM13.923 9.282C13.825 9.383 13.717 9.48 13.593 9.564L9.271 12.5H12.846C13.441 12.5 13.923 12.052 13.923 11.5V9.282ZM8.582 4.172C8.204 3.915 7.689 3.915 7.311 4.172L2.936 7.144C2.348 7.543 2.348 8.358 2.936 8.758L7.311 11.73C7.689 11.986 8.204 11.986 8.582 11.73L12.957 8.758C13.544 8.358 13.544 7.543 12.957 7.144L8.582 4.172ZM5.316 7.695C7.109 7.211 9.034 7.698 10.418 8.998C9.979 9.828 9.061 10.4 8 10.4C6.517 10.4 5.308 9.278 5.308 7.9C5.308 7.83 5.311 7.763 5.316 7.695ZM8 5.4C9.483 5.401 10.692 6.523 10.692 7.9C10.692 8.1 10.667 8.295 10.616 8.482C9.181 7.235 7.256 6.745 5.431 7.152C5.773 6.137 6.797 5.4 8 5.4ZM13.593 6.336C13.717 6.42 13.825 6.516 13.923 6.616V4.5C13.923 3.948 13.441 3.5 12.846 3.5H9.418L13.593 6.336ZM3.154 3.5C2.56 3.5 2.077 3.948 2.077 4.5V6.513C2.115 6.479 2.152 6.445 2.192 6.413L2.3 6.336L6.475 3.5H3.154Z" fill="currentColor"/></svg>` },
+    { cat: 'Televisão',  label: 'Televisão',          icon: `<svg viewBox="0 0 16 16" fill="none"><path d="M13.5 4H9.207L11.354 1.854C11.448 1.76 11.5 1.633 11.5 1.5C11.5 1.367 11.448 1.24 11.354 1.146C11.26 1.052 11.133 1 11 1C10.867 1 10.74 1.052 10.646 1.146L8 3.793L5.354 1.146C5.307 1.1 5.252 1.063 5.191 1.038C5.131 1.013 5.066 1 5 1C4.934 1 4.869 1.013 4.809 1.038C4.748 1.063 4.693 1.1 4.646 1.146C4.552 1.24 4.5 1.367 4.5 1.5C4.5 1.633 4.552 1.76 4.646 1.854L6.793 4H2.5C2.235 4 1.98 4.105 1.793 4.293C1.605 4.48 1.5 4.735 1.5 5V12.5C1.5 12.765 1.605 13.02 1.793 13.207C1.98 13.395 2.235 13.5 2.5 13.5H13.5C13.765 13.5 14.02 13.395 14.207 13.207C14.395 13.02 14.5 12.765 14.5 12.5V5C14.5 4.735 14.395 4.48 14.207 4.293C14.02 4.105 13.765 4 13.5 4ZM2.5 5H9V12.5H2.5V5ZM13.5 12.5H10V5H13.5V12.5ZM12.5 7.25C12.5 7.398 12.456 7.543 12.374 7.667C12.291 7.79 12.174 7.886 12.037 7.943C11.9 7.999 11.749 8.015 11.604 7.986C11.458 7.957 11.325 7.885 11.22 7.78C11.115 7.675 11.043 7.542 11.014 7.396C10.986 7.251 11 7.1 11.057 6.963C11.114 6.826 11.21 6.709 11.333 6.626C11.457 6.544 11.602 6.5 11.75 6.5C11.949 6.5 12.14 6.579 12.28 6.72C12.421 6.86 12.5 7.051 12.5 7.25ZM12.5 10.25C12.5 10.398 12.456 10.543 12.374 10.667C12.291 10.79 12.174 10.886 12.037 10.943C11.9 10.999 11.749 11.015 11.604 10.986C11.458 10.957 11.325 10.885 11.22 10.78C11.115 10.675 11.043 10.542 11.014 10.396C10.986 10.251 11 10.1 11.057 9.963C11.114 9.826 11.21 9.709 11.333 9.626C11.457 9.544 11.602 9.5 11.75 9.5C11.949 9.5 12.14 9.579 12.28 9.72C12.421 9.86 12.5 10.051 12.5 10.25Z" fill="currentColor"/></svg>` },
+    { cat: 'Jornalismo', label: 'Jornalismo',         icon: `<svg viewBox="0 0 16 16" fill="none"><path d="M5.5 7C5.5 6.867 5.553 6.74 5.646 6.646C5.74 6.553 5.867 6.5 6 6.5H11C11.133 6.5 11.26 6.553 11.354 6.646C11.447 6.74 11.5 6.867 11.5 7C11.5 7.133 11.447 7.26 11.354 7.354C11.26 7.447 11.133 7.5 11 7.5H6C5.867 7.5 5.74 7.447 5.646 7.354C5.553 7.26 5.5 7.133 5.5 7ZM6 9.5H11C11.133 9.5 11.26 9.447 11.354 9.354C11.447 9.26 11.5 9.133 11.5 9C11.5 8.867 11.447 8.74 11.354 8.646C11.26 8.553 11.133 8.5 11 8.5H6C5.867 8.5 5.74 8.553 5.646 8.646C5.553 8.74 5.5 8.867 5.5 9C5.5 9.133 5.553 9.26 5.646 9.354C5.74 9.447 5.867 9.5 6 9.5ZM14.5 4V11.5C14.5 11.898 14.342 12.279 14.061 12.561C13.779 12.842 13.398 13 13 13H2C1.603 13 1.223 12.843 0.942 12.563C0.661 12.283 0.502 11.904 0.5 11.507V5.5C0.5 5.367 0.553 5.24 0.646 5.146C0.74 5.053 0.867 5 1 5C1.133 5 1.26 5.053 1.354 5.146C1.447 5.24 1.5 5.367 1.5 5.5V11.5C1.5 11.633 1.553 11.76 1.646 11.854C1.74 11.947 1.867 12 2 12C2.133 12 2.26 11.947 2.354 11.854C2.447 11.76 2.5 11.633 2.5 11.5V4C2.5 3.735 2.605 3.48 2.793 3.293C2.98 3.105 3.235 3 3.5 3H13.5C13.765 3 14.02 3.105 14.207 3.293C14.395 3.48 14.5 3.735 14.5 4ZM13.5 4H3.5V11.5C3.5 11.67 3.471 11.84 3.414 12H13C13.133 12 13.26 11.947 13.354 11.854C13.447 11.76 13.5 11.633 13.5 11.5V4Z" fill="currentColor"/></svg>` },
+    { cat: 'São Paulo',  label: 'São Paulo',          icon: `<svg viewBox="0 0 24 24" fill="none"><path d="M18.7646 10.4248H24L18.4795 19.875H8.91699L5.23633 13.5752H0L5.52148 4.125H15.083L18.7646 10.4248Z" stroke="currentColor" stroke-width="2" fill="none"/></svg>` },
+    { cat: 'Jardel',     label: 'Jardel sendo Jardel', icon: `<svg viewBox="0 0 32 32" fill="none"><path d="M21.782 6.564V19.752C21.782 21.88 21.586 22.86 20.998 23.7C20.13 24.932 18.674 25.436 16.07 25.436C13.746 25.436 12.122 25.044 11.254 24.232C10.47 23.532 10.218 22.608 10.218 20.564C10.218 19.64 10.218 19.136 10.246 18.436H12.318V20.228C12.318 23.224 12.738 23.616 16.014 23.616C19.15 23.616 19.682 23 19.682 19.388V6.564H21.782Z" fill="currentColor"/></svg>` },
+  ];
+
+  /* ── Parse URL ──────────────────────────────────────────── */
+  const catParam = new URLSearchParams(location.search).get('cat') || 'Jardel';
+  const catDef   = CATS.find(c => c.cat === catParam) || CATS[CATS.length - 1];
+
+  /* ── Filter tweets ──────────────────────────────────────── */
+  const allTweets = tweetData.filter(t => t.type === 'Tweet');
+  const catTweets = allTweets.filter(t => t.category === catParam);
+
+  /* Update page title */
+  document.title = `${catDef.label} — Os tuítes do Jardel`;
+
+  /* ── Sidebar quote (most-liked tweet from this category, > 40 chars) */
+  const quoteSource = catTweets
+    .filter(t => t.text.length > 40)
+    .sort((a, b) => b.likes - a.likes)[0];
+  if (quoteSource) {
+    document.getElementById('sidebar-quote').innerHTML =
+      `<span>"${esc(quoteSource.text)}"</span><span class="sidebar-quote-date">${fmtDate(quoteSource.date)}</span>`;
+  }
+
+  /* ── Category title & quote ─────────────────────────────── */
+  document.getElementById('cat-title').textContent = catDef.label;
+  document.getElementById('cat-title-mobile').textContent = catDef.label;
+
+  /* ── Build sidebar nav ──────────────────────────────────── */
+  function buildSidebarNav() {
+    const nav = document.getElementById('sidebar-cat-nav');
+    nav.innerHTML = CATS.map(c => {
+      const isActive = c.cat === catParam;
+      const iconHtml = c.icon
+        ? c.icon
+        : `<span class="cat-btn-j" aria-hidden="true">J</span>`;
+      return `<a href="categoria.html?cat=${encodeURIComponent(c.cat)}" class="cat-btn${isActive ? ' active' : ''}" aria-current="${isActive ? 'page' : 'false'}">
+        ${iconHtml}<span>${c.label}</span>
+      </a>`;
+    }).join('');
+  }
+  buildSidebarNav();
+
+  /* ── Build mobile category strip ───────────────────────── */
+  function buildMobileStrip() {
+    const strip = document.getElementById('mobile-cat-strip');
+    strip.innerHTML = CATS.map(c => {
+      const isActive = c.cat === catParam;
+      const iconHtml = c.icon
+        ? c.icon.replace('viewBox', 'width="14" height="14" viewBox')
+        : `<span style="font-family:var(--font-display);font-size:13px">J</span>`;
+      return `<a href="categoria.html?cat=${encodeURIComponent(c.cat)}" class="mobile-cat-btn${isActive ? ' active' : ''}">
+        ${iconHtml}${c.label}
+      </a>`;
+    }).join('');
+
+  }
+  buildMobileStrip();
+
+  /* ── Sorting ────────────────────────────────────────────── */
+  const PAGE_SIZE = 50;
+  let sortedTweets = [];
+  let browsePage   = 0;
+
+  function getSorted(order) {
+    const arr = [...catTweets];
+    switch (order) {
+      case 'mais-curtidos':  return arr.sort((a, b) => b.likes - a.likes);
+      case 'menos-curtidos': return arr.sort((a, b) => a.likes - b.likes);
+      case 'mais-recentes':  return arr.sort((a, b) => new Date(b.date) - new Date(a.date));
+      case 'mais-antigos':   return arr.sort((a, b) => new Date(a.date) - new Date(b.date));
+      case 'aleatorio':      return shuffle(arr);
+      default:               return arr.sort((a, b) => b.likes - a.likes);
+    }
+  }
+
+  /* ── Tweet renderer ─────────────────────────────────────── */
+  function tweetHTML(t) {
+    const likesHtml = t.likes > 0
+      ? `<div class="tweet-meta-likes">
+           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+             <path d="M12 21C12 21 3 15.5 3 9.5C3 7.015 5.015 5 7.5 5C9.023 5 10.371 5.764 11.197 6.94L12 8l.803-1.06C13.629 5.764 14.977 5 16.5 5C18.985 5 21 7.015 21 9.5C21 15.5 12 21 12 21Z" fill="#BDBDBD"/>
+           </svg>
+           <span class="tweet-meta-text">${fmtLikes(t.likes)}</span>
+         </div>`
+      : '';
+    return `<article class="tweet-normal">
+      <p class="tweet-text">${linkify(t.text)}</p>
+      <div class="tweet-meta">
+        ${likesHtml}
+        <span class="tweet-meta-text">${fmtDate(t.date)}</span>
+      </div>
+    </article>`;
+  }
+
+  /* ── Browse mode ────────────────────────────────────────── */
+  function renderBrowse() {
+    const order = document.getElementById('sort-select').value;
+    sortedTweets = getSorted(order);
+    browsePage   = 0;
+    document.getElementById('tweet-list').innerHTML = '';
+    loadMoreBrowse();
+  }
+
+  function loadMoreBrowse() {
+    const start  = browsePage * PAGE_SIZE;
+    const slice  = sortedTweets.slice(start, start + PAGE_SIZE);
+    const list   = document.getElementById('tweet-list');
+    list.insertAdjacentHTML('beforeend', slice.map(tweetHTML).join(''));
+    browsePage++;
+    const btn = document.getElementById('btn-load-more');
+    if (browsePage * PAGE_SIZE >= sortedTweets.length) {
+      btn.classList.add('hidden');
+    } else {
+      btn.classList.remove('hidden');
+    }
+  }
+
+  document.getElementById('sort-select').addEventListener('change', renderBrowse);
+  document.getElementById('btn-load-more').addEventListener('click', loadMoreBrowse);
+
+  /* ── Fuse.js search ─────────────────────────────────────── */
+  const fuse = new Fuse(catTweets, {
+    keys: ['text'],
+    threshold: 0.35,
+    distance: 200,
+    minMatchCharLength: 2,
+    ignoreLocation: true,
+  });
+
+  let searchResults = [];
+  let searchPage    = 0;
+
+  function runSearch(q) {
+    q = q.trim();
+    if (!q) {
+      showBrowse();
+      return;
+    }
+    showSearchState();
+
+    searchResults = fuse.search(q).map(r => r.item);
+    searchPage    = 0;
+
+    const meta = document.getElementById('search-meta');
+    const count = searchResults.length;
+    meta.textContent = count === 0
+      ? `Nenhum resultado para "${q}".`
+      : `Sua busca por "${q}" deu ${pluralTweet(count)}.`;
+
+    document.getElementById('search-list').innerHTML = '';
+    document.getElementById('no-results').classList.toggle('visible', count === 0);
+
+    if (count > 0) loadMoreSearch();
+  }
+
+  function loadMoreSearch() {
+    const start = searchPage * PAGE_SIZE;
+    const slice = searchResults.slice(start, start + PAGE_SIZE);
+    document.getElementById('search-list')
+      .insertAdjacentHTML('beforeend', slice.map(tweetHTML).join(''));
+    searchPage++;
+    const btn = document.getElementById('btn-search-more');
+    if (searchPage * PAGE_SIZE >= searchResults.length) {
+      btn.classList.add('hidden');
+    } else {
+      btn.classList.remove('hidden');
+    }
+  }
+
+  document.getElementById('btn-search-more').addEventListener('click', loadMoreSearch);
+
+  /* ── State toggle ───────────────────────────────────────── */
+  function showSearchState() {
+    document.getElementById('browse-state').classList.add('hidden');
+    document.getElementById('search-state').classList.add('visible');
+  }
+  function showBrowse() {
+    document.getElementById('browse-state').classList.remove('hidden');
+    document.getElementById('search-state').classList.remove('visible');
+    // clear search inputs
+    document.getElementById('sidebar-search').value = '';
+  }
+
+  /* ── Sidebar search wiring ──────────────────────────────── */
+  const sidebarInput = document.getElementById('sidebar-search');
+  document.getElementById('sidebar-search-btn').addEventListener('click', () => runSearch(sidebarInput.value));
+  sidebarInput.addEventListener('keydown', e => { if (e.key === 'Enter') runSearch(sidebarInput.value); });
+  sidebarInput.addEventListener('input', e => { if (!e.target.value) showBrowse(); });
+
+
+  /* ── Hamburger / Mobile Overlay ─────────────────────────── */
+  const hamburger    = document.getElementById('hamburger');
+  const overlay      = document.getElementById('mobile-overlay');
+  const overlayClose = document.getElementById('mobile-overlay-close');
+
+  function openOverlay() {
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    hamburger.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeOverlay() {
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    hamburger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  hamburger.addEventListener('click', openOverlay);
+  overlayClose.addEventListener('click', closeOverlay);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeOverlay(); });
+
+  /* ── Initial render ─────────────────────────────────────── */
+  renderBrowse();
+</script>
+</body>
+</html>
