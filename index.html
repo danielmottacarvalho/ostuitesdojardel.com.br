@@ -110,52 +110,66 @@
     .mega-menu {
       position: fixed;
       top: var(--header-h);
-      left: 0;
-      right: 0;
+      right: 56px;
       z-index: 999;
-      display: flex;
-      justify-content: center;
-      padding: 24px 56px 32px;
-      background: rgba(246, 244, 242, 0.96);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      width: 728px;
+      height: 565px;
+      background: #FFFFFF;
+      border-radius: 8px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+      padding: 32px;
       opacity: 0;
       transform: translateY(-8px);
       pointer-events: none;
-      transition: opacity 0.2s ease, transform 0.2s ease;
+      transition: opacity 0.18s ease-in, transform 0.18s ease-in;
     }
     .mega-menu.open {
       opacity: 1;
       transform: translateY(0);
       pointer-events: auto;
+      transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+    }
+    .mega-title {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 400;
+      color: var(--grey-900);
+      margin: 0 0 32px;
+      line-height: 1.2;
     }
     .mega-grid {
       display: grid;
       grid-template-columns: repeat(3, 200px);
-      gap: 12px;
+      gap: 8px;
     }
     .mega-item {
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
+      align-items: flex-start;
+      justify-content: flex-start;
       gap: 8px;
       width: 200px;
       height: 124px;
       padding: 16px;
-      border-radius: 16px;
+      border-radius: 8px;
       color: var(--grey-900);
       text-decoration: none;
       background: transparent;
-      transition: background 0.2s ease, color 0.2s ease;
+      transition: background 0.15s ease, color 0.15s ease;
     }
     .mega-item:hover {
       background: #E1EEF8;
       color: #2B8AE3;
     }
+    .mega-item:focus-visible {
+      outline: 2px solid #2B8AE3;
+      outline-offset: 2px;
+      border-radius: 8px;
+    }
     .mega-item:hover .mega-item-label { color: #2B8AE3; }
     .mega-icon {
-      width: 32px;
-      height: 32px;
+      width: 20px;
+      height: 20px;
       flex-shrink: 0;
     }
     .mega-item-label {
@@ -164,9 +178,12 @@
       line-height: 1.366;
       letter-spacing: -0.01em;
       color: var(--grey-900);
-      transition: color 0.2s ease;
+      transition: color 0.15s ease;
     }
     .mega-item:hover .mega-icon img { filter: invert(39%) sepia(72%) saturate(1500%) hue-rotate(196deg) brightness(95%); }
+    @media (prefers-reduced-motion: reduce) {
+      .mega-menu { transition: none !important; }
+    }
 
     /* ══════════════════════════════════════════════════════════
        HERO
@@ -916,41 +933,42 @@
       <span></span><span></span><span></span>
     </button>
     <nav class="nav">
-      <button class="nav-cat-trigger" id="nav-cat-trigger" aria-haspopup="true" aria-expanded="false">Categorias</button>
+      <button class="nav-cat-trigger" id="nav-cat-trigger" aria-haspopup="true" aria-expanded="false" aria-controls="mega-menu">Categorias</button>
       <a href="sobre.html">Sobre o Projeto</a>
       <a href="sobre-jardel.html">Sobre o Jardel</a>
     </nav>
   </header>
 
   <!-- ── Mega menu ────────────────────────────────────── -->
-  <div class="mega-menu" id="mega-menu" role="navigation" aria-label="Categorias">
+  <div class="mega-menu" id="mega-menu" role="navigation" aria-labelledby="mega-title">
+    <h2 class="mega-title" id="mega-title">Navegue por categoria</h2>
     <div class="mega-grid">
       <a href="categoria.html?cat=Jardel" class="mega-item">
-        <div class="mega-icon"><img src="images/icons/icon-jardel.svg" width="32" height="32" alt=""></div>
+        <div class="mega-icon"><img src="images/icons/icon-jardel.svg" width="20" height="20" alt=""></div>
         <span class="mega-item-label">Jardel sendo Jardel</span>
       </a>
       <a href="categoria.html?cat=Música" class="mega-item">
-        <div class="mega-icon"><img src="images/icons/icon-musica.svg" width="32" height="32" alt=""></div>
+        <div class="mega-icon"><img src="images/icons/icon-musica.svg" width="20" height="20" alt=""></div>
         <span class="mega-item-label">Música</span>
       </a>
       <a href="categoria.html?cat=Futebol" class="mega-item">
-        <div class="mega-icon"><img src="images/icons/icon-futebol.svg" width="32" height="32" alt=""></div>
+        <div class="mega-icon"><img src="images/icons/icon-futebol.svg" width="20" height="20" alt=""></div>
         <span class="mega-item-label">Futebol</span>
       </a>
       <a href="categoria.html?cat=Política" class="mega-item">
-        <div class="mega-icon"><img src="images/icons/icon-politica.svg" width="32" height="32" alt=""></div>
+        <div class="mega-icon"><img src="images/icons/icon-politica.svg" width="20" height="20" alt=""></div>
         <span class="mega-item-label">Política</span>
       </a>
       <a href="categoria.html?cat=Televisão" class="mega-item">
-        <div class="mega-icon"><img src="images/icons/icon-tv.svg" width="32" height="32" alt=""></div>
+        <div class="mega-icon"><img src="images/icons/icon-tv.svg" width="20" height="20" alt=""></div>
         <span class="mega-item-label">Televisão</span>
       </a>
       <a href="categoria.html?cat=Jornalismo" class="mega-item">
-        <div class="mega-icon"><img src="images/icons/icon-jornalismo.svg" width="32" height="32" alt=""></div>
+        <div class="mega-icon"><img src="images/icons/icon-jornalismo.svg" width="20" height="20" alt=""></div>
         <span class="mega-item-label">Jornalismo</span>
       </a>
       <a href="categoria.html?cat=São Paulo" class="mega-item">
-        <div class="mega-icon"><img src="images/icons/icon-saopaulo.svg" width="32" height="32" alt=""></div>
+        <div class="mega-icon"><img src="images/icons/icon-saopaulo.svg" width="20" height="20" alt=""></div>
         <span class="mega-item-label">São Paulo</span>
       </a>
     </div>
@@ -1273,26 +1291,52 @@
   const navTrigger = document.getElementById('nav-cat-trigger');
   const megaMenu   = document.getElementById('mega-menu');
   let megaTimeout;
+  let megaIsOpen = false;
 
   function openMega() {
     clearTimeout(megaTimeout);
+    megaIsOpen = true;
     megaMenu.classList.add('open');
     navTrigger.setAttribute('aria-expanded', 'true');
     navTrigger.classList.add('active');
   }
-  function closeMega() {
-    megaTimeout = setTimeout(() => {
+  function closeMega(immediate) {
+    const doClose = () => {
+      megaIsOpen = false;
       megaMenu.classList.remove('open');
       navTrigger.setAttribute('aria-expanded', 'false');
       navTrigger.classList.remove('active');
-    }, 120);
+    };
+    if (immediate) { clearTimeout(megaTimeout); doClose(); }
+    else { megaTimeout = setTimeout(doClose, 120); }
   }
 
+  // Hover
   navTrigger.addEventListener('mouseenter', openMega);
-  navTrigger.addEventListener('mouseleave', closeMega);
+  navTrigger.addEventListener('mouseleave', () => closeMega(false));
   megaMenu.addEventListener('mouseenter', openMega);
-  megaMenu.addEventListener('mouseleave', closeMega);
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMega(); });
+  megaMenu.addEventListener('mouseleave', () => closeMega(false));
+
+  // Click toggle (keyboard + mouse)
+  navTrigger.addEventListener('click', e => {
+    e.stopPropagation();
+    megaIsOpen ? closeMega(true) : openMega();
+  });
+
+  // Click outside
+  document.addEventListener('click', e => {
+    if (megaIsOpen && !megaMenu.contains(e.target) && e.target !== navTrigger) {
+      closeMega(true);
+    }
+  });
+
+  // Keyboard: Escape closes and returns focus
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && megaIsOpen) {
+      closeMega(true);
+      navTrigger.focus();
+    }
+  });
 
   /* ── Hamburger / Mobile Overlay ─────────────────────────── */
   const hamburger    = document.getElementById('hamburger');
