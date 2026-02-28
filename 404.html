@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 — Os tuítes do Jardel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Goudy+Bookletter+1911&family=Google+Sans:wght@400;500;700&family=Google+Sans+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; }
+    button { cursor: pointer; border: none; background: none; }
+
+    :root {
+      --bg:          #F6F4F2;
+      --grey-900:    #212121;
+      --grey-600:    #757575;
+      --grey-400:    #BDBDBD;
+      --white:       #FFFFFF;
+      --border:      #E0E0E0;
+      --blue:        #2B8AE3;
+      --blue-bg:     #E6F4FE;
+      --font-display: 'Goudy Bookletter 1911', Georgia, serif;
+      --font-body:    'Google Sans', system-ui, -apple-system, sans-serif;
+      --font-code:    'Google Sans Code', 'Courier New', monospace;
+      --header-h: 96px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); background: var(--bg); color: var(--grey-900); -webkit-font-smoothing: antialiased; }
+
+    .page { max-width: 1440px; margin: 0 auto; display: flex; flex-direction: column; min-height: 100vh; padding-top: var(--header-h); }
+
+    /* Header */
+    .header {
+      display: flex; flex-direction: row; justify-content: space-between;
+      align-items: center; width: 100%; padding: 24px 56px; gap: 24px;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background-color: rgba(246, 244, 242, 0.82);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    }
+    .logo { display: inline-flex; align-items: center; }
+    .logo img { height: 48px; width: auto; display: block; }
+    .nav { display: flex; flex-direction: row; align-items: center; gap: 24px; }
+    .nav a, .nav-cat-trigger {
+      font-size: 16px; font-weight: 400; letter-spacing: -0.02em;
+      color: var(--grey-900); text-decoration: none; background: none;
+      border: none; cursor: pointer; padding: 0; font-family: var(--font-body);
+    }
+    .nav a:hover, .nav-cat-trigger:hover, .nav a.active, .nav-cat-trigger.active { font-weight: 700; }
+
+    /* Hamburger */
+    .hamburger { display: none; flex-direction: column; justify-content: center; align-items: center; gap: 5px; width: 32px; height: 32px; cursor: pointer; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--grey-900); border-radius: 2px; }
+
+    /* Mega menu */
+    .mega-menu {
+      position: fixed; top: var(--header-h); left: 0; right: 0; z-index: 999;
+      display: flex; justify-content: center; padding: 24px 56px 32px;
+      background: rgba(246, 244, 242, 0.96); backdrop-filter: blur(12px);
+      opacity: 0; transform: translateY(-8px); pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .mega-menu.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .mega-grid { display: grid; grid-template-columns: repeat(3, 200px); gap: 12px; }
+    .mega-item {
+      display: flex; flex-direction: column; justify-content: flex-end; gap: 8px;
+      width: 200px; height: 124px; padding: 16px; border-radius: 16px;
+      color: var(--grey-900); text-decoration: none; background: transparent;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .mega-item:hover { background: #E1EEF8; color: #2B8AE3; }
+    .mega-item:hover .mega-item-label { color: #2B8AE3; }
+    .mega-item:hover .mega-icon img { filter: invert(39%) sepia(72%) saturate(1500%) hue-rotate(196deg) brightness(95%); }
+    .mega-icon { width: 32px; height: 32px; flex-shrink: 0; }
+    .mega-item-label { font-size: 14px; font-weight: 700; line-height: 1.366; letter-spacing: -0.01em; color: var(--grey-900); transition: color 0.2s ease; }
+
+    /* Mobile overlay */
+    .mobile-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #212121; z-index: 999; overflow-y: auto; transform: translateY(-100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    .mobile-overlay.open { transform: translateY(0); }
+    .mobile-overlay-inner { display: flex; flex-direction: column; gap: 24px; padding: 56px 40px; min-height: 100%; }
+    .mobile-overlay-top { display: flex; justify-content: flex-end; }
+    .mobile-overlay-close { background: none; border: none; padding: 0; cursor: pointer; display: flex; align-items: center; width: 32px; height: 32px; }
+    .mobile-overlay-section { display: flex; flex-direction: column; gap: 8px; }
+    .mobile-overlay-logo { padding-bottom: 32px; }
+    .mobile-overlay-logo img { height: 56px; width: auto; filter: brightness(0) invert(1); }
+    .mobile-overlay-heading { font-family: var(--font-display); font-size: 40px; line-height: 1.36em; color: #fff; text-decoration: none; display: block; }
+    .mobile-overlay-cat-items { display: flex; flex-direction: column; gap: 24px; padding-left: 12px; }
+    .mobile-overlay-cat-items a { font-family: var(--font-body); font-weight: 500; font-size: 18px; color: #fff; text-decoration: none; display: block; }
+
+    /* 404 content */
+    .error-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 24px;
+      text-align: center;
+    }
+    .error-code {
+      font-family: var(--font-display);
+      font-size: 160px;
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      color: var(--grey-900);
+      opacity: 0.08;
+      user-select: none;
+    }
+    .error-content {
+      margin-top: -40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+    .error-title {
+      font-family: var(--font-display);
+      font-size: 40px;
+      font-weight: 400;
+      line-height: 1.36em;
+      letter-spacing: -0.02em;
+      color: var(--grey-900);
+    }
+    .error-desc {
+      font-size: 18px;
+      color: var(--grey-600);
+      max-width: 480px;
+      line-height: 1.5;
+    }
+    .error-link {
+      margin-top: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 12px 32px;
+      background: var(--blue-bg);
+      border-radius: 9999px;
+      border: 1px solid var(--blue);
+      font-family: var(--font-code);
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--blue);
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+    }
+    .error-link:hover { background: var(--blue); color: #fff; }
+
+    /* Footer */
+    .footer { display: flex; flex-direction: column; align-items: center; padding: 56px; background: var(--grey-900); width: 100%; }
+    .footer-main { display: flex; flex-direction: row; justify-content: space-between; align-items: flex-start; gap: 56px; width: 100%; }
+    .footer-logo { display: inline-flex; align-items: center; }
+    .footer-logo img { height: 48px; width: auto; display: block; filter: brightness(0) invert(1); }
+    .footer-links { display: flex; flex-direction: row; gap: 56px; flex: 1; justify-content: flex-end; }
+    .footer-col { display: flex; flex-direction: column; }
+    .footer-col-header { font-size: 14px; font-weight: 700; color: var(--grey-400); margin-bottom: 4px; }
+    .footer-col a { font-size: 14px; font-weight: 500; line-height: 2em; color: var(--bg); }
+    .footer-col a:hover { font-weight: 700; }
+    .footer-disclaimer { font-family: var(--font-body); font-size: 14px; color: #BDBDBD; text-align: center; margin-top: 48px; width: 100%; }
+    .footer-disclaimer a { font-weight: 500; color: #BDBDBD; text-decoration: none; }
+    .footer-disclaimer a:hover { color: #e0e0e0; text-decoration: underline; }
+
+    @media (max-width: 1023px) {
+      :root { --header-h: 88px; }
+      .header { padding: 20px 32px; }
+    }
+    @media (max-width: 767px) {
+      :root { --header-h: 80px; }
+      a { min-height: 48px; display: inline-flex; align-items: center; }
+      .header { padding: 16px 24px; }
+      .nav { display: none; }
+      .hamburger { display: flex; }
+      .mega-menu { display: none !important; }
+      .error-code { font-size: 100px; }
+      .error-title { font-size: 28px; }
+      .footer { padding: 40px 24px; }
+      .footer-main { flex-direction: column; gap: 32px; }
+      .footer-links { flex-direction: column; }
+      .footer-disclaimer { margin-top: 32px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <a href="index.html" class="logo">
+      <img src="images/logo.svg" alt="Os tuítes do Jardel">
+    </a>
+    <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav">
+      <button class="nav-cat-trigger" id="nav-cat-trigger" aria-haspopup="true" aria-expanded="false">Categorias</button>
+      <a href="sobre.html">Sobre o Projeto</a>
+      <a href="sobre-jardel.html">Sobre o Jardel</a>
+    </nav>
+  </header>
+
+  <div class="mega-menu" id="mega-menu" role="navigation" aria-label="Categorias">
+    <div class="mega-grid">
+      <a href="categoria.html?cat=Jardel" class="mega-item">
+        <div class="mega-icon"><img src="images/icons/icon-jardel.svg" width="32" height="32" alt=""></div>
+        <span class="mega-item-label">Jardel sendo Jardel</span>
+      </a>
+      <a href="categoria.html?cat=Música" class="mega-item">
+        <div class="mega-icon"><img src="images/icons/icon-musica.svg" width="32" height="32" alt=""></div>
+        <span class="mega-item-label">Música</span>
+      </a>
+      <a href="categoria.html?cat=Futebol" class="mega-item">
+        <div class="mega-icon"><img src="images/icons/icon-futebol.svg" width="32" height="32" alt=""></div>
+        <span class="mega-item-label">Futebol</span>
+      </a>
+      <a href="categoria.html?cat=Política" class="mega-item">
+        <div class="mega-icon"><img src="images/icons/icon-politica.svg" width="32" height="32" alt=""></div>
+        <span class="mega-item-label">Política</span>
+      </a>
+      <a href="categoria.html?cat=Televisão" class="mega-item">
+        <div class="mega-icon"><img src="images/icons/icon-tv.svg" width="32" height="32" alt=""></div>
+        <span class="mega-item-label">Televisão</span>
+      </a>
+      <a href="categoria.html?cat=Jornalismo" class="mega-item">
+        <div class="mega-icon"><img src="images/icons/icon-jornalismo.svg" width="32" height="32" alt=""></div>
+        <span class="mega-item-label">Jornalismo</span>
+      </a>
+      <a href="categoria.html?cat=São Paulo" class="mega-item">
+        <div class="mega-icon"><img src="images/icons/icon-saopaulo.svg" width="32" height="32" alt=""></div>
+        <span class="mega-item-label">São Paulo</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="mobile-overlay" id="mobile-overlay" aria-hidden="true">
+    <div class="mobile-overlay-inner">
+      <div class="mobile-overlay-top">
+        <button class="mobile-overlay-close" id="mobile-overlay-close" aria-label="Fechar">
+          <svg width="32" height="32" viewBox="263 0 32 32" fill="none"><path d="M294.531 29.2673C294.68 29.4159 294.798 29.5924 294.878 29.7866C294.959 29.9808 295 30.189 295 30.3992C295 30.6094 294.959 30.8176 294.878 31.0118C294.798 31.206 294.68 31.3825 294.531 31.5311C294.382 31.6798 294.206 31.7977 294.012 31.8781C293.818 31.9586 293.609 32 293.399 32C293.189 32 292.981 31.9586 292.787 31.8781C292.592 31.7977 292.416 31.6798 292.267 31.5311L279 18.2619L265.733 31.5311C265.433 31.8313 265.025 32 264.601 32C264.176 32 263.769 31.8313 263.469 31.5311C263.169 31.2309 263 30.8238 263 30.3992C263 29.9746 263.169 29.5675 263.469 29.2673L276.738 16L263.469 2.73274C263.169 2.43253 263 2.02536 263 1.6008C263 1.17624 263.169 0.769072 263.469 0.468863C263.769 0.168655 264.176 0 264.601 0C265.025 0 265.433 0.168655 265.733 0.468863L279 13.7381L292.267 0.468863C292.567 0.168655 292.975 -8.36906e-09 293.399 0C293.824 8.36906e-09 294.231 0.168655 294.531 0.468863C294.831 0.769072 295 1.17624 295 1.6008C295 2.02536 294.831 2.43253 294.531 2.73274L281.262 16L294.531 29.2673Z" fill="#F5F2EF"/></svg>
+        </button>
+      </div>
+      <div class="mobile-overlay-section">
+        <div class="mobile-overlay-logo"><a href="index.html"><img src="images/logo.svg" alt="Os tuítes do Jardel"></a></div>
+        <span class="mobile-overlay-heading">Categorias</span>
+        <nav class="mobile-overlay-cat-items">
+          <a href="categoria.html?cat=Jardel">Jardel sendo Jardel</a>
+          <a href="categoria.html?cat=Música">Música</a>
+          <a href="categoria.html?cat=Futebol">Futebol</a>
+          <a href="categoria.html?cat=Política">Política</a>
+          <a href="categoria.html?cat=Televisão">Televisão</a>
+          <a href="categoria.html?cat=Jornalismo">Jornalismo</a>
+          <a href="categoria.html?cat=São Paulo">São Paulo</a>
+        </nav>
+      </div>
+      <div class="mobile-overlay-section">
+        <a href="sobre.html" class="mobile-overlay-heading">Sobre o Projeto</a>
+      </div>
+      <div class="mobile-overlay-section">
+        <a href="sobre-jardel.html" class="mobile-overlay-heading">Sobre o Jardel</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="error-wrap">
+    <div class="error-code" aria-hidden="true">404</div>
+    <div class="error-content">
+      <h1 class="error-title">Jardel não esteve aqui</h1>
+      <p class="error-desc">Esta página não existe. Mas os tuítes existem — e são muitos. Vá de volta e continue lendo.</p>
+      <a href="index.html" class="error-link">← Voltar ao início</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-main">
+      <a href="index.html" class="footer-logo">
+        <img src="images/logo.svg" alt="Os tuítes do Jardel">
+      </a>
+      <div class="footer-links">
+        <div class="footer-col">
+          <span class="footer-col-header">Categorias</span>
+          <a href="categoria.html?cat=Jardel">Jardel sendo Jardel</a>
+          <a href="categoria.html?cat=Música">Música</a>
+          <a href="categoria.html?cat=Futebol">Futebol</a>
+          <a href="categoria.html?cat=Política">Política</a>
+          <a href="categoria.html?cat=Televisão">Televisão</a>
+          <a href="categoria.html?cat=Jornalismo">Jornalismo</a>
+          <a href="categoria.html?cat=São Paulo">São Paulo</a>
+        </div>
+        <div class="footer-col">
+          <span class="footer-col-header">Sobre</span>
+          <a href="sobre.html">Sobre o projeto</a>
+          <a href="sobre-jardel.html">Sobre o Jardel</a>
+        </div>
+      </div>
+    </div>
+    <p class="footer-disclaimer">Jardel aprovaria este site. Provavelmente. Feito mesmo assim por <a href="https://www.motta.works/" target="_blank" rel="noopener noreferrer">Daniel Motta</a>.</p>
+  </footer>
+
+</div>
+
+<script>
+  const navTrigger = document.getElementById('nav-cat-trigger');
+  const megaMenu   = document.getElementById('mega-menu');
+  let megaTimeout;
+  function openMega() { clearTimeout(megaTimeout); megaMenu.classList.add('open'); navTrigger.setAttribute('aria-expanded','true'); navTrigger.classList.add('active'); }
+  function closeMega() { megaTimeout = setTimeout(() => { megaMenu.classList.remove('open'); navTrigger.setAttribute('aria-expanded','false'); navTrigger.classList.remove('active'); }, 120); }
+  navTrigger.addEventListener('mouseenter', openMega);
+  navTrigger.addEventListener('mouseleave', closeMega);
+  megaMenu.addEventListener('mouseenter', openMega);
+  megaMenu.addEventListener('mouseleave', closeMega);
+
+  const hamburger    = document.getElementById('hamburger');
+  const overlay      = document.getElementById('mobile-overlay');
+  const overlayClose = document.getElementById('mobile-overlay-close');
+  hamburger.addEventListener('click', () => { overlay.classList.add('open'); hamburger.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; });
+  overlayClose.addEventListener('click', () => { overlay.classList.remove('open'); hamburger.setAttribute('aria-expanded','false'); document.body.style.overflow=''; });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') { overlay.classList.remove('open'); closeMega(); document.body.style.overflow=''; } });
+</script>
+</body>
+</html>

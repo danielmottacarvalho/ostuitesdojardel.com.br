@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Busca — Os tuítes do Jardel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Goudy+Bookletter+1911&family=Google+Sans:wght@400;500;700&family=Google+Sans+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; }
+    button { cursor: pointer; border: none; background: none; }
+
+    :root {
+      --bg:          #F6F4F2;
+      --black:       #0A0A0A;
+      --grey-900:    #212121;
+      --grey-800:    #424242;
+      --grey-600:    #757575;
+      --grey-500:    #9E9E9E;
+      --grey-400:    #BDBDBD;
+      --white:       #FFFFFF;
+      --border:      #E0E0E0;
+      --blue:        #2B8AE3;
+      --blue-bg:     #E6F4FE;
+      --font-display: 'Goudy Bookletter 1911', Georgia, serif;
+      --font-body:    'Google Sans', system-ui, -apple-system, sans-serif;
+      --font-code:    'Google Sans Code', 'Courier New', monospace;
+
+      --header-h: 96px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--grey-900);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page { max-width: 1440px; margin: 0 auto; display: flex; flex-direction: column; padding-top: var(--header-h); }
+
+    /* ── Header ── */
+    .header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 24px 56px;
+      gap: 24px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background-color: rgba(246, 244, 242, 0.82);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .logo { display: inline-flex; align-items: center; }
+    .logo img { height: 48px; width: auto; display: block; }
+
+    .nav { display: flex; flex-direction: row; align-items: center; gap: 24px; }
+    .nav a, .nav-cat-trigger {
+      font-size: 16px;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      color: var(--grey-900);
+      text-decoration: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      font-family: var(--font-body);
+    }
+    .nav a:hover, .nav-cat-trigger:hover,
+    .nav a.active, .nav-cat-trigger.active { font-weight: 700; text-decoration: none; }
+
+    /* Hamburger */
+    .hamburger { display: none; flex-direction: column; justify-content: center; align-items: center; gap: 5px; width: 32px; height: 32px; cursor: pointer; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--grey-900); border-radius: 2px; transition: transform 0.2s, opacity 0.2s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ── Mega menu ── */
+    .mega-menu {
+      position: fixed;
+      top: var(--header-h);
+      left: 0;
+      right: 0;
+      z-index: 999;
+      display: flex;
+      justify-content: center;
+      padding: 24px 56px 32px;
+      background: rgba(246, 244, 242, 0.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      opacity: 0;
+      transform: translateY(-8px);
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .mega-menu.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .mega-grid { display: grid; grid-template-columns: repeat(3, 200px); gap: 12px; }
+    .mega-item {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      gap: 8px;
+      width: 200px;
+      height: 124px;
+      padding: 16px;
+      border-radius: 16px;
+      color: var(--grey-900);
+      text-decoration: none;
+      background: transparent;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .mega-item:hover { background: #E1EEF8; color: #2B8AE3; }
+    .mega-item:hover .mega-item-label { color: #2B8AE3; }
+    .mega-item:hover .mega-icon img { filter: invert(39%) sepia(72%) saturate(1500%) hue-rotate(196deg) brightness(95%); }
+    .mega-icon { width: 32px; height: 32px; flex-shrink: 0; }
+    .mega-item-label { font-size: 14px; font-weight: 700; line-height: 1.366; letter-spacing: -0.01em; color: var(--grey-900); transition: color 0.2s ease; }
+
+    /* ── Mobile overlay ── */
+    .mobile-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #212121;
+      z-index: 999;
+      overflow-y: auto;
+      transform: translateY(-100%);
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .mobile-overlay.open { transform: translateY(0); }
+    .mobile-overlay-inner { display: flex; flex-direction: column; gap: 24px; padding: 56px 40px; min-height: 100%; }
+    .mobile-overlay-top { display: flex; justify-content: flex-end; align-items: center; }
+    .mobile-overlay-close { background: none; border: none; padding: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; min-height: unset; }
+    .mobile-overlay-section { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+    .mobile-overlay-logo { padding-bottom: 32px; }
+    .mobile-overlay-logo img { height: 56px; width: auto; filter: brightness(0) invert(1); }
+    .mobile-overlay-heading { font-family: var(--font-display); font-weight: 400; font-size: 40px; line-height: 1.36em; letter-spacing: -0.01em; color: #FFFFFF; text-decoration: none; display: block; min-height: auto; }
+    .mobile-overlay-cat-items { display: flex; flex-direction: column; gap: 24px; padding-left: 12px; }
+    .mobile-overlay-cat-items a { font-family: var(--font-body); font-weight: 500; font-size: 18px; line-height: 1.272em; letter-spacing: -0.01em; color: #FFFFFF; text-decoration: none; display: block; min-height: auto; }
+    .mobile-overlay-cat-items a:hover, a.mobile-overlay-heading:hover { opacity: 0.7; }
+
+    /* ── Main ── */
+    .main-wrap {
+      max-width: 800px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 72px 56px 104px;
+    }
+
+    /* Back link */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--grey-600);
+      text-decoration: none;
+      margin-bottom: 32px;
+    }
+    .back-link:hover { color: var(--grey-900); }
+    .back-link svg { flex-shrink: 0; }
+
+    /* Heading */
+    .busca-title {
+      font-family: var(--font-display);
+      font-size: 48px;
+      font-weight: 400;
+      line-height: 1.36em;
+      letter-spacing: -0.02em;
+      color: var(--grey-900);
+      margin-bottom: 8px;
+    }
+    .busca-query {
+      color: var(--blue);
+    }
+
+    /* Toolbar */
+    .results-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      margin: 16px 0 0;
+      gap: 16px;
+    }
+    .tweet-count {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--grey-600);
+    }
+    .sort-select {
+      font-family: var(--font-code);
+      font-size: 12px;
+      color: var(--grey-900);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 5px 10px;
+      background: var(--white);
+      cursor: pointer;
+      outline: none;
+    }
+    .sort-select:focus { border-color: var(--blue); }
+
+    /* Tweet */
+    .tweet-normal {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .tweet-text {
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.333em;
+      color: var(--grey-900);
+    }
+    .tweet-meta {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 24px;
+    }
+    .tweet-meta-likes { display: flex; flex-direction: row; align-items: center; gap: 8px; }
+    .tweet-meta-likes svg { flex-shrink: 0; }
+    .tweet-meta-text { font-size: 14px; font-weight: 500; color: var(--grey-500); }
+    .tweet-link { color: var(--blue); text-decoration: none; word-break: break-all; }
+    .tweet-link:hover { text-decoration: underline; }
+
+    /* Tweet images */
+    .tweet-images { display: flex; flex-direction: row; gap: 4px; width: 100%; border-radius: 12px; overflow: hidden; }
+    .tweet-img-btn { flex: 1; min-width: 0; padding: 0; margin: 0; border: none; background: none; cursor: zoom-in; display: block; }
+    .tweet-img-btn img { display: block; width: 100%; height: 100%; object-fit: cover; min-height: 160px; max-height: 480px; }
+    .tweet-images.single .tweet-img-btn img { max-height: 520px; object-fit: contain; background: #f0ede9; }
+
+    /* Load more */
+    .load-more-wrap { display: flex; justify-content: center; padding: 32px 0 16px; }
+    .btn-load-more {
+      display: inline-flex;
+      align-items: center;
+      padding: 12px 32px;
+      background: var(--blue-bg);
+      border-radius: 9999px;
+      border: 1px solid var(--blue);
+      font-family: var(--font-code);
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--blue);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+    .btn-load-more:hover { background: var(--blue); color: var(--white); }
+    .btn-load-more.hidden { display: none; }
+
+    /* No results */
+    .no-results {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 88px 24px;
+      background: var(--white);
+      border-radius: 16px;
+      margin-top: 24px;
+      text-align: center;
+    }
+    .no-results.visible { display: flex; }
+    .no-results-title { font-family: var(--font-display); font-size: 32px; font-weight: 400; color: var(--grey-900); }
+    .no-results-text { font-size: 18px; color: var(--grey-600); max-width: 480px; }
+    .no-results-link { margin-top: 8px; font-size: 16px; font-weight: 500; color: var(--blue); text-decoration: none; }
+    .no-results-link:hover { text-decoration: underline; }
+
+    /* Lightbox */
+    .lb-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.88); z-index: 9000; align-items: center; justify-content: center; }
+    .lb-overlay.open { display: flex; }
+    .lb-img { max-width: min(92vw, 1200px); max-height: 90vh; object-fit: contain; border-radius: 4px; display: block; }
+    .lb-close { position: fixed; top: 20px; right: 24px; background: none; border: none; color: #fff; font-size: 32px; line-height: 1; cursor: pointer; padding: 4px 8px; }
+    .lb-arrow { position: fixed; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.15); border: none; color: #fff; font-size: 28px; padding: 12px 16px; cursor: pointer; border-radius: 4px; line-height: 1; }
+    .lb-arrow:hover { background: rgba(255,255,255,0.28); }
+    .lb-prev { left: 16px; } .lb-next { right: 16px; } .lb-arrow[hidden] { display: none; }
+
+    /* Footer */
+    .footer { display: flex; flex-direction: column; align-items: center; padding: 56px; background: var(--grey-900); width: 100%; }
+    .footer-main { display: flex; flex-direction: row; justify-content: space-between; align-items: flex-start; gap: 56px; width: 100%; }
+    .footer-logo { display: inline-flex; align-items: center; }
+    .footer-logo img { height: 48px; width: auto; display: block; filter: brightness(0) invert(1); }
+    .footer-links { display: flex; flex-direction: row; gap: 56px; flex: 1; justify-content: flex-end; }
+    .footer-col { display: flex; flex-direction: column; }
+    .footer-col-header { font-size: 14px; font-weight: 700; color: var(--grey-400); margin-bottom: 4px; }
+    .footer-col a { font-size: 14px; font-weight: 500; line-height: 2em; color: var(--bg); }
+    .footer-col a:hover { font-weight: 700; }
+    .footer-disclaimer { font-family: var(--font-body); font-size: 14px; font-weight: 400; color: #BDBDBD; text-align: center; margin-top: 48px; width: 100%; }
+    .footer-disclaimer a { font-weight: 500; color: #BDBDBD; text-decoration: none; }
+    .footer-disclaimer a:hover { color: #e0e0e0; text-decoration: underline; }
+
+    /* Responsive */
+    @media (max-width: 1023px) {
+      :root { --header-h: 88px; }
+      .header { padding: 20px 32px; }
+      .main-wrap { padding: 56px 40px 80px; }
+    }
+    @media (max-width: 767px) {
+      :root { --header-h: 80px; }
+      a { min-height: 48px; display: inline-flex; align-items: center; }
+      .header { padding: 16px 24px; }
+      .nav { display: none; }
+      .hamburger { display: flex; }
+      .mega-menu { display: none !important; }
+      .main-wrap { padding: 40px 24px 80px; }
+      .busca-title { font-size: 36px; }
+      .footer { padding: 40px 24px; }
+      .footer-main { flex-direction: column; gap: 32px; }
+      .footer-links { flex-direction: column; gap: 0; }
+      .footer-disclaimer { margin-top: 32px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <header class="header">
+    <a href="index.html" class="logo">
+      <img src="images/logo.svg" alt="Os tuítes do Jardel">
+    </a>
+    <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav">
+      <button class="nav-cat-trigger" id="nav-cat-trigger" aria-haspopup="true" aria-expanded="false">Categorias</button>
+      <a href="sobre.html">Sobre o Projeto</a>
+      <a href="sobre-jardel.html">Sobre o Jardel</a>
+    </nav>
+  </header>
+
+  <!-- Mega menu -->
+  <div class="mega-menu" id="mega-menu" role="navigation" aria-label="Categorias">
+    <div class="mega-grid">
+      <a href="categoria.html?cat=Jardel" class="mega-item">
+        <div class="mega-icon"><img src="images/icons/icon-jardel.svg" width="32" height="32" alt=""></div>
+        <span class="mega-item-label">Jardel sendo Jardel</span>
+      </a>
+      <a href="categoria.html?cat=Música" class="mega-item">
+        <div class="mega-icon"><img src="images/icons/icon-musica.svg" width="32" height="32" alt=""></div>
+        <span class="mega-item-label">Música</span>
+      </a>
+      <a href="categoria.html?cat=Futebol" class="mega-item">
+        <div class="mega-icon"><img src="images/icons/icon-futebol.svg" width="32" height="32" alt=""></div>
+        <span class="mega-item-label">Futebol</span>
+      </a>
+      <a href="categoria.html?cat=Política" class="mega-item">
+        <div class="mega-icon"><img src="images/icons/icon-politica.svg" width="32" height="32" alt=""></div>
+        <span class="mega-item-label">Política</span>
+      </a>
+      <a href="categoria.html?cat=Televisão" class="mega-item">
+        <div class="mega-icon"><img src="images/icons/icon-tv.svg" width="32" height="32" alt=""></div>
+        <span class="mega-item-label">Televisão</span>
+      </a>
+      <a href="categoria.html?cat=Jornalismo" class="mega-item">
+        <div class="mega-icon"><img src="images/icons/icon-jornalismo.svg" width="32" height="32" alt=""></div>
+        <span class="mega-item-label">Jornalismo</span>
+      </a>
+      <a href="categoria.html?cat=São Paulo" class="mega-item">
+        <div class="mega-icon"><img src="images/icons/icon-saopaulo.svg" width="32" height="32" alt=""></div>
+        <span class="mega-item-label">São Paulo</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Mobile overlay -->
+  <div class="mobile-overlay" id="mobile-overlay" aria-hidden="true">
+    <div class="mobile-overlay-inner">
+      <div class="mobile-overlay-top">
+        <button class="mobile-overlay-close" id="mobile-overlay-close" aria-label="Fechar menu">
+          <svg width="32" height="32" viewBox="263 0 32 32" fill="none"><path d="M294.531 29.2673C294.68 29.4159 294.798 29.5924 294.878 29.7866C294.959 29.9808 295 30.189 295 30.3992C295 30.6094 294.959 30.8176 294.878 31.0118C294.798 31.206 294.68 31.3825 294.531 31.5311C294.382 31.6798 294.206 31.7977 294.012 31.8781C293.818 31.9586 293.609 32 293.399 32C293.189 32 292.981 31.9586 292.787 31.8781C292.592 31.7977 292.416 31.6798 292.267 31.5311L279 18.2619L265.733 31.5311C265.433 31.8313 265.025 32 264.601 32C264.176 32 263.769 31.8313 263.469 31.5311C263.169 31.2309 263 30.8238 263 30.3992C263 29.9746 263.169 29.5675 263.469 29.2673L276.738 16L263.469 2.73274C263.169 2.43253 263 2.02536 263 1.6008C263 1.17624 263.169 0.769072 263.469 0.468863C263.769 0.168655 264.176 0 264.601 0C265.025 0 265.433 0.168655 265.733 0.468863L279 13.7381L292.267 0.468863C292.567 0.168655 292.975 -8.36906e-09 293.399 0C293.824 8.36906e-09 294.231 0.168655 294.531 0.468863C294.831 0.769072 295 1.17624 295 1.6008C295 2.02536 294.831 2.43253 294.531 2.73274L281.262 16L294.531 29.2673Z" fill="#F5F2EF"/></svg>
+        </button>
+      </div>
+      <div class="mobile-overlay-section">
+        <div class="mobile-overlay-logo">
+          <a href="index.html"><img src="images/logo.svg" alt="Os tuítes do Jardel"></a>
+        </div>
+        <span class="mobile-overlay-heading">Categorias</span>
+        <nav class="mobile-overlay-cat-items">
+          <a href="categoria.html?cat=Jardel">Jardel sendo Jardel</a>
+          <a href="categoria.html?cat=Música">Música</a>
+          <a href="categoria.html?cat=Futebol">Futebol</a>
+          <a href="categoria.html?cat=Política">Política</a>
+          <a href="categoria.html?cat=Televisão">Televisão</a>
+          <a href="categoria.html?cat=Jornalismo">Jornalismo</a>
+          <a href="categoria.html?cat=São Paulo">São Paulo</a>
+        </nav>
+      </div>
+      <div class="mobile-overlay-section">
+        <a href="sobre.html" class="mobile-overlay-heading">Sobre o Projeto</a>
+      </div>
+      <div class="mobile-overlay-section">
+        <a href="sobre-jardel.html" class="mobile-overlay-heading">Sobre o Jardel</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <div class="main-wrap">
+    <a href="index.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Voltar ao início
+    </a>
+
+    <h1 class="busca-title" id="busca-title">Resultados para</h1>
+
+    <div class="results-toolbar" id="results-toolbar" style="display:none">
+      <span class="tweet-count" id="tweet-count"></span>
+      <select class="sort-select" id="sort-select">
+        <option value="relevancia">Relevância</option>
+        <option value="mais-curtidos">Mais curtidos</option>
+        <option value="menos-curtidos">Menos curtidos</option>
+        <option value="mais-recentes">2023 → 2009</option>
+        <option value="mais-antigos">2009 → 2023</option>
+      </select>
+    </div>
+
+    <div id="tweet-list"></div>
+    <div class="load-more-wrap">
+      <button class="btn-load-more hidden" id="btn-load-more">Carregar mais</button>
+    </div>
+
+    <div class="no-results" id="no-results">
+      <p class="no-results-title">Jardel não passou por aqui</p>
+      <p class="no-results-text">Nenhum tuíte encontrado para esta busca. O Jards era prolífico, mas ninguém é perfeito.</p>
+      <a href="index.html" class="no-results-link">← Voltar e tentar de novo</a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-main">
+      <a href="index.html" class="footer-logo">
+        <img src="images/logo.svg" alt="Os tuítes do Jardel">
+      </a>
+      <div class="footer-links">
+        <div class="footer-col">
+          <span class="footer-col-header">Categorias</span>
+          <a href="categoria.html?cat=Jardel">Jardel sendo Jardel</a>
+          <a href="categoria.html?cat=Música">Música</a>
+          <a href="categoria.html?cat=Futebol">Futebol</a>
+          <a href="categoria.html?cat=Política">Política</a>
+          <a href="categoria.html?cat=Televisão">Televisão</a>
+          <a href="categoria.html?cat=Jornalismo">Jornalismo</a>
+          <a href="categoria.html?cat=São Paulo">São Paulo</a>
+        </div>
+        <div class="footer-col">
+          <span class="footer-col-header">Sobre</span>
+          <a href="sobre.html">Sobre o projeto</a>
+          <a href="sobre-jardel.html">Sobre o Jardel</a>
+        </div>
+      </div>
+    </div>
+    <p class="footer-disclaimer">Jardel aprovaria este site. Provavelmente. Feito mesmo assim por <a href="https://www.motta.works/" target="_blank" rel="noopener noreferrer">Daniel Motta</a>.</p>
+  </footer>
+
+</div><!-- /.page -->
+
+<!-- Lightbox -->
+<div class="lb-overlay" id="lb-overlay" role="dialog" aria-modal="true">
+  <button class="lb-close" id="lb-close" aria-label="Fechar">&#x2715;</button>
+  <button class="lb-arrow lb-prev" id="lb-prev" aria-label="Anterior">&#8249;</button>
+  <img class="lb-img" id="lb-img" src="" alt="">
+  <button class="lb-arrow lb-next" id="lb-next" aria-label="Próxima">&#8250;</button>
+</div>
+
+<script src="data.js"></script>
+<script>
+  const MONTHS = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho',
+    'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+
+  function fmtDate(iso) {
+    const d = new Date(iso);
+    return `${d.getDate()} de ${MONTHS[d.getMonth()]} de ${d.getFullYear()}`;
+  }
+  function fmtLikes(n) { return n > 0 ? n.toLocaleString('pt-BR') + ' curtidas' : ''; }
+  function esc(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function linkify(str) {
+    return esc(str).replace(/(https?:\/\/[^\s<>"]+)/g,
+      '<a href="$1" target="_blank" rel="noopener noreferrer" class="tweet-link">$1</a>');
+  }
+
+  function tweetImagesHTML(t) {
+    const raw = t.mediaUrl;
+    if (!raw) return '';
+    const urls = (Array.isArray(raw) ? raw : raw.split(',').map(s => s.trim())).filter(Boolean);
+    if (!urls.length) return '';
+    const cls = urls.length === 1 ? 'single' : 'multi';
+    const btns = urls.map((src, i) =>
+      `<button class="tweet-img-btn" data-src="${src}" data-idx="${i}" aria-label="Abrir imagem" type="button">
+         <img src="${src}" alt="" loading="lazy">
+       </button>`
+    ).join('');
+    return `<div class="tweet-images ${cls}" data-imgs="${urls.join(',')}">${btns}</div>`;
+  }
+
+  function tweetHTML(t) {
+    const likesHtml = t.likes > 0
+      ? `<div class="tweet-meta-likes">
+           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+             <path d="M12 21C12 21 3 15.5 3 9.5C3 7.015 5.015 5 7.5 5C9.023 5 10.371 5.764 11.197 6.94L12 8l.803-1.06C13.629 5.764 14.977 5 16.5 5C18.985 5 21 7.015 21 9.5C21 15.5 12 21 12 21Z" fill="#BDBDBD"/>
+           </svg>
+           <span class="tweet-meta-text">${fmtLikes(t.likes)}</span>
+         </div>` : '';
+    const imgsHtml = tweetImagesHTML(t);
+    return `<article class="tweet-normal">
+      <p class="tweet-text">${linkify(t.text)}</p>
+      ${imgsHtml}
+      <div class="tweet-meta">
+        ${likesHtml}
+        <span class="tweet-meta-text">${fmtDate(t.date)}</span>
+      </div>
+    </article>`;
+  }
+
+  /* ── Search ── */
+  const q = new URLSearchParams(location.search).get('q') || '';
+
+  document.title = q ? `"${q}" — Os tuítes do Jardel` : 'Busca — Os tuítes do Jardel';
+
+  let allResults = [];
+  let displayOrder = [];
+  const PAGE_SIZE = 50;
+  let page = 0;
+
+  if (q) {
+    const titleEl = document.getElementById('busca-title');
+    titleEl.innerHTML = `Resultados para <span class="busca-query">"${esc(q)}"</span>`;
+
+    allResults = tweetData.filter(t =>
+      t.type === 'Tweet' && t.text.toLowerCase().includes(q.toLowerCase())
+    );
+
+    if (allResults.length === 0) {
+      document.getElementById('no-results').classList.add('visible');
+    } else {
+      document.getElementById('results-toolbar').style.display = '';
+      document.getElementById('tweet-count').textContent =
+        `${allResults.length.toLocaleString('pt-BR')} tuíte${allResults.length !== 1 ? 's' : ''}`;
+      renderResults();
+    }
+  } else {
+    document.getElementById('busca-title').textContent = 'Busca';
+    document.getElementById('no-results').classList.add('visible');
+  }
+
+  function getSorted(arr, order) {
+    const a = [...arr];
+    switch (order) {
+      case 'mais-curtidos':  return a.sort((x,y) => y.likes - x.likes);
+      case 'menos-curtidos': return a.sort((x,y) => x.likes - y.likes);
+      case 'mais-recentes':  return a.sort((x,y) => new Date(y.date) - new Date(x.date));
+      case 'mais-antigos':   return a.sort((x,y) => new Date(x.date) - new Date(y.date));
+      default: return a; // relevância = original order
+    }
+  }
+
+  function renderResults() {
+    const order = document.getElementById('sort-select').value;
+    displayOrder = getSorted(allResults, order);
+    page = 0;
+    document.getElementById('tweet-list').innerHTML = '';
+    loadMore();
+  }
+
+  function loadMore() {
+    const start = page * PAGE_SIZE;
+    const slice = displayOrder.slice(start, start + PAGE_SIZE);
+    document.getElementById('tweet-list').insertAdjacentHTML('beforeend', slice.map(tweetHTML).join(''));
+    page++;
+    const btn = document.getElementById('btn-load-more');
+    btn.classList.toggle('hidden', page * PAGE_SIZE >= displayOrder.length);
+  }
+
+  document.getElementById('sort-select').addEventListener('change', renderResults);
+  document.getElementById('btn-load-more').addEventListener('click', loadMore);
+
+  /* ── Lightbox ── */
+  const lbOverlay = document.getElementById('lb-overlay');
+  const lbImg     = document.getElementById('lb-img');
+  const lbClose   = document.getElementById('lb-close');
+  const lbPrev    = document.getElementById('lb-prev');
+  const lbNext    = document.getElementById('lb-next');
+  let lbImages = [], lbIdx = 0;
+
+  function openLightbox(imgs, idx) {
+    lbImages = imgs; lbIdx = idx;
+    lbImg.src = lbImages[lbIdx];
+    lbPrev.hidden = lbImages.length <= 1;
+    lbNext.hidden = lbImages.length <= 1;
+    lbOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    lbOverlay.classList.remove('open');
+    lbImg.src = '';
+    document.body.style.overflow = '';
+  }
+  function lbNavigate(dir) {
+    lbIdx = (lbIdx + dir + lbImages.length) % lbImages.length;
+    lbImg.src = lbImages[lbIdx];
+  }
+
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('.tweet-img-btn');
+    if (btn) {
+      const wrap = btn.closest('.tweet-images');
+      const imgs = (wrap.dataset.imgs || '').split(',').filter(Boolean);
+      const idx  = parseInt(btn.dataset.idx || '0', 10);
+      openLightbox(imgs, idx);
+    }
+  });
+  lbClose.addEventListener('click', closeLightbox);
+  lbOverlay.addEventListener('click', e => { if (e.target === lbOverlay) closeLightbox(); });
+  lbPrev.addEventListener('click', () => lbNavigate(-1));
+  lbNext.addEventListener('click', () => lbNavigate(1));
+
+  /* ── Mega menu ── */
+  const navTrigger = document.getElementById('nav-cat-trigger');
+  const megaMenu   = document.getElementById('mega-menu');
+  let megaTimeout;
+  function openMega() { clearTimeout(megaTimeout); megaMenu.classList.add('open'); navTrigger.setAttribute('aria-expanded', 'true'); navTrigger.classList.add('active'); }
+  function closeMega() { megaTimeout = setTimeout(() => { megaMenu.classList.remove('open'); navTrigger.setAttribute('aria-expanded', 'false'); navTrigger.classList.remove('active'); }, 120); }
+  navTrigger.addEventListener('mouseenter', openMega);
+  navTrigger.addEventListener('mouseleave', closeMega);
+  megaMenu.addEventListener('mouseenter', openMega);
+  megaMenu.addEventListener('mouseleave', closeMega);
+
+  /* ── Hamburger ── */
+  const hamburger    = document.getElementById('hamburger');
+  const overlay      = document.getElementById('mobile-overlay');
+  const overlayClose = document.getElementById('mobile-overlay-close');
+  hamburger.addEventListener('click', () => { overlay.classList.add('open'); hamburger.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; });
+  overlayClose.addEventListener('click', () => { overlay.classList.remove('open'); hamburger.setAttribute('aria-expanded','false'); document.body.style.overflow=''; });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') { overlay.classList.remove('open'); closeMega(); closeLightbox(); document.body.style.overflow=''; } });
+</script>
+</body>
+</html>
