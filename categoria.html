@@ -432,6 +432,11 @@
     }
     .sidebar-search-btn:hover { background: var(--blue); color: var(--white); }
 
+    /* Mobile-only search bar (hidden on desktop) */
+    .mobile-search-bar {
+      display: none;
+    }
+
     .sidebar-quote {
       display: flex;
       flex-direction: column;
@@ -843,6 +848,13 @@
 
       .cat-title { font-size: 36px; }
       .cat-title-mobile { display: block; }
+      .mobile-search-bar {
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+        align-items: center;
+        margin-bottom: 16px;
+      }
       .results-toolbar { flex-wrap: wrap; gap: 10px; }
       .tweet-text { font-size: 16px; }
 
@@ -975,6 +987,18 @@
 
     <!-- Main area -->
     <main class="main-area">
+
+      <!-- Mobile-only search bar -->
+      <div class="mobile-search-bar">
+        <input
+          type="search"
+          class="sidebar-search-input"
+          id="mobile-search"
+          placeholder="Deve ter um tuíte sobre isso..."
+          autocomplete="off"
+        >
+        <button class="sidebar-search-btn" id="mobile-search-btn">Buscar</button>
+      </div>
 
       <!-- Browse state (default) -->
       <div class="browse-state" id="browse-state">
@@ -1303,6 +1327,7 @@
     document.getElementById('search-state').classList.remove('visible');
     // clear search inputs
     document.getElementById('sidebar-search').value = '';
+    document.getElementById('mobile-search').value = '';
   }
 
   /* ── Sidebar search wiring ──────────────────────────────── */
@@ -1310,6 +1335,12 @@
   document.getElementById('sidebar-search-btn').addEventListener('click', () => runSearch(sidebarInput.value));
   sidebarInput.addEventListener('keydown', e => { if (e.key === 'Enter') runSearch(sidebarInput.value); });
   sidebarInput.addEventListener('input', e => { if (!e.target.value) showBrowse(); });
+
+  /* ── Mobile search wiring ───────────────────────────────── */
+  const mobileInput = document.getElementById('mobile-search');
+  document.getElementById('mobile-search-btn').addEventListener('click', () => runSearch(mobileInput.value));
+  mobileInput.addEventListener('keydown', e => { if (e.key === 'Enter') runSearch(mobileInput.value); });
+  mobileInput.addEventListener('input', e => { if (!e.target.value) showBrowse(); });
 
 
   /* ── Hamburger / Mobile Overlay ─────────────────────────── */
