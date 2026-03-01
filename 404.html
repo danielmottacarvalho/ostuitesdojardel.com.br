@@ -4,6 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>404 — Os tuítes do Jardel</title>
+  <!-- Favicon & Webclip -->
+  <link rel="icon" type="image/png" href="images/webclip.png">
+  <link rel="apple-touch-icon" href="images/webclip.png">
+  <!-- OpenGraph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Os tuítes do Jardel">
+  <meta property="og:title" content="Os tuítes do Jardel">
+  <meta property="og:description" content="Uma coleção dos melhores tuítes de Jardel Sebba — o jornalista que virou fenômeno do Twitter brasileiro.">
+  <meta property="og:image" content="https://danielmottacarvalho.github.io/jardel-memorial/images/og-image.png">
+  <meta property="og:url" content="https://danielmottacarvalho.github.io/jardel-memorial/">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Goudy+Bookletter+1911&family=Google+Sans:wght@400;500;700&family=Google+Sans+Code:wght@400;500&display=swap" rel="stylesheet">
@@ -103,34 +114,33 @@
       justify-content: center;
       padding: 80px 24px;
       text-align: center;
+      gap: 32px;
     }
-    .error-code {
-      font-family: var(--font-display);
-      font-size: 160px;
-      font-weight: 400;
-      line-height: 1;
-      letter-spacing: -0.04em;
-      color: var(--grey-900);
-      opacity: 0.08;
-      user-select: none;
+    .error-photo {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
     }
     .error-content {
-      margin-top: -40px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 16px;
+      gap: 8px;
     }
     .error-title {
       font-family: var(--font-display);
-      font-size: 40px;
+      font-size: 64px;
       font-weight: 400;
-      line-height: 1.36em;
+      line-height: 100px;
       letter-spacing: -0.02em;
       color: var(--grey-900);
+      max-width: 760px;
     }
     .error-desc {
       font-size: 18px;
+      font-weight: 400;
       color: var(--grey-600);
       max-width: 480px;
       line-height: 1.5;
@@ -139,12 +149,11 @@
       margin-top: 8px;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
       padding: 12px 32px;
       background: var(--blue-bg);
       border-radius: 9999px;
       border: 1px solid var(--blue);
-      font-family: var(--font-code);
+      font-family: var(--font-body);
       font-size: 16px;
       font-weight: 500;
       color: var(--blue);
@@ -178,8 +187,8 @@
       .nav { display: none; }
       .hamburger { display: flex; }
       .mega-menu { display: none !important; }
-      .error-code { font-size: 100px; }
-      .error-title { font-size: 28px; }
+      .error-photo { width: 72px; height: 72px; }
+      .error-title { font-size: 36px; line-height: 48px; }
       .footer { padding: 40px 24px; }
       .footer-main { flex-direction: column; gap: 32px; }
       .footer-links { flex-direction: column; }
@@ -268,11 +277,11 @@
   </div>
 
   <div class="error-wrap">
-    <div class="error-code" aria-hidden="true">404</div>
+    <img src="images/jardel-404.png" alt="Jardel Sebba" class="error-photo">
     <div class="error-content">
-      <h1 class="error-title">Jardel não esteve aqui</h1>
-      <p class="error-desc">Esta página não existe. Mas os tuítes existem — e são muitos. Vá de volta e continue lendo.</p>
-      <a href="index.html" class="error-link">← Voltar ao início</a>
+      <h1 class="error-title">Página não encontrada (404)</h1>
+      <p class="error-desc">O algoritmo, como sempre, não entendeu a referência.</p>
+      <a href="index.html" class="error-link">Me tira dessa</a>
     </div>
   </div>
 
