@@ -692,28 +692,41 @@
       display: none;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      gap: 12px;
-      padding: 88px 24px;
+      gap: 24px;
+      padding: 88px;
       background: var(--white);
       border-radius: 16px;
       margin-top: 24px;
       text-align: center;
+      max-width: 600px;
     }
     .no-results-card.visible { display: flex; }
 
+    .no-results-photo {
+      width: 88px;
+      height: 88px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .no-results-text-block {
+      display: flex;
+      flex-direction: column;
+    }
+
     .no-results-title {
-      font-family: var(--font-display);
-      font-size: 28px;
-      font-weight: 400;
-      color: #000;
+      font-family: var(--font-body);
+      font-size: 24px;
+      font-weight: 500;
+      color: var(--grey-900);
+      line-height: 1.3;
     }
 
     .no-results-text {
       font-size: 18px;
       font-weight: 400;
       color: var(--grey-600);
-      max-width: 480px;
+      line-height: 1.5;
     }
 
     /* ════════════════════════════════════════════════════════
@@ -973,8 +986,11 @@
         <p class="search-results-meta" id="search-meta"></p>
         <div id="search-list"></div>
         <div class="no-results-card" id="no-results">
-          <p class="no-results-title">Jardel não passou por aqui</p>
-          <p class="no-results-text">Nenhum tweet encontrado. Raro, mas acontecia.</p>
+          <img src="images/jardel-top.png" alt="Jardel Sebba" class="no-results-photo">
+          <div class="no-results-text-block">
+            <p class="no-results-title">Ué, não tem nada aqui...</p>
+            <p class="no-results-text">Sua busca não deu resultados. É frustrante, sabemos. Jardel sempre se sentia assim tentando convencer alguém de que Paulo Leminski não é o que eles pensam que é.</p>
+          </div>
         </div>
         <div class="load-more-wrap">
           <button class="btn-load-more hidden" id="btn-search-more">Carregar mais</button>
