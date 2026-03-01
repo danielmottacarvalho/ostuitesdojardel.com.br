@@ -285,7 +285,7 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 4px 12px;
+      padding: 2px 12px;
       border-radius: 4px;
       border: 1px solid rgba(255,255,255,0.50);
       background: rgba(255,255,255,0.50);
@@ -1120,6 +1120,13 @@
       </a>`;
     }).join('');
 
+    // Scroll active pill flush to the left content edge (matching strip's 24px padding-left)
+    const activePill = strip.querySelector('.mobile-cat-btn.active');
+    if (activePill) {
+      requestAnimationFrame(() => {
+        strip.scrollLeft = activePill.offsetLeft - 24;
+      });
+    }
   }
   buildMobileStrip();
 
