@@ -670,21 +670,34 @@
 
     .browse-state.hidden { display: none; }
 
-    .search-results-title {
-      font-family: var(--font-display);
-      font-size: 40px;
-      font-weight: 400;
-      line-height: 1.36em;
-      letter-spacing: -0.02em;
-      color: #000;
-      padding-bottom: 8px;
+    .search-header-card {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      padding: 16px;
+      background: var(--white);
+      border-radius: 16px;
+      margin-bottom: 8px;
+    }
+    .search-header-card.visible { display: flex; }
+
+    .search-header-photo {
+      height: 64px;
+      width: auto;
+      display: block;
+      flex-shrink: 0;
     }
 
-    .search-results-meta {
-      font-size: 14px;
-      color: var(--grey-600);
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--border);
+    .search-header-msg {
+      font-family: var(--font-body);
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--grey-900);
+      line-height: 1.4;
+    }
+
+    .search-header-term {
+      font-weight: 500;
     }
 
     /* No results card */
@@ -827,8 +840,6 @@
 
       .cat-title { font-size: 36px; }
       .cat-title-mobile { display: block; }
-      .search-results-title { font-size: 28px; }
-
       .results-toolbar { flex-wrap: wrap; gap: 10px; }
       .tweet-text { font-size: 16px; }
 
@@ -982,8 +993,10 @@
 
       <!-- Search results state -->
       <div class="search-state" id="search-state">
-        <h2 class="search-results-title">Ele falou sobre isso, sim</h2>
-        <p class="search-results-meta" id="search-meta"></p>
+        <div class="search-header-card" id="search-header">
+          <img src="images/jardel-top.png" alt="Jardel Sebba" class="search-header-photo">
+          <p class="search-header-msg" id="search-meta"></p>
+        </div>
         <div id="search-list"></div>
         <div class="no-results-card" id="no-results">
           <img src="images/jardel-top.png" alt="Jardel Sebba" class="no-results-photo">
@@ -1247,16 +1260,18 @@
     searchResults = fuse.search(q).map(r => r.item);
     searchPage    = 0;
 
-    const meta = document.getElementById('search-meta');
-    const count = searchResults.length;
-    meta.textContent = count === 0
-      ? `Nenhum resultado para "${q}".`
-      : `Sua busca por "${q}" deu ${pluralTweet(count)}.`;
+    const meta   = document.getElementById('search-meta');
+    const header = document.getElementById('search-header');
+    const count  = searchResults.length;
 
     document.getElementById('search-list').innerHTML = '';
     document.getElementById('no-results').classList.toggle('visible', count === 0);
+    header.classList.toggle('visible', count > 0);
 
-    if (count > 0) loadMoreSearch();
+    if (count > 0) {
+      meta.innerHTML = `Sua busca por <span class="search-header-term">"${esc(q)}"</span> deu <span class="search-header-term">${pluralTweet(count)}</span>.`;
+      loadMoreSearch();
+    }
   }
 
   function loadMoreSearch() {
