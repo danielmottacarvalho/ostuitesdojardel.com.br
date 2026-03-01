@@ -93,8 +93,8 @@
     @media (prefers-reduced-motion: reduce) { .mega-menu { transition: none !important; } }
 
     /* Mobile overlay */
-    .mobile-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #212121; z-index: 999; overflow-y: auto; transform: translateY(-100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-    .mobile-overlay.open { transform: translateY(0); }
+    .mobile-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #212121; z-index: 1001; overflow-y: auto; transform: translateX(100%); transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
+    .mobile-overlay.open { transform: translateX(0); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
     .mobile-overlay-inner { display: flex; flex-direction: column; gap: 24px; padding: 56px 40px; min-height: 100%; }
     .mobile-overlay-top { display: flex; justify-content: flex-end; }
     .mobile-overlay-close { background: none; border: none; padding: 0; cursor: pointer; display: flex; align-items: center; width: 32px; height: 32px; }

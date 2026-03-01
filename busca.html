@@ -145,12 +145,15 @@
       top: 0; left: 0;
       width: 100%; height: 100%;
       background: #212121;
-      z-index: 999;
+      z-index: 1001;
       overflow-y: auto;
-      transform: translateY(-100%);
+      transform: translateX(100%);
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .mobile-overlay.open {
+      transform: translateX(0);
       transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .mobile-overlay.open { transform: translateY(0); }
     .mobile-overlay-inner { display: flex; flex-direction: column; gap: 24px; padding: 56px 40px; min-height: 100%; }
     .mobile-overlay-top { display: flex; justify-content: flex-end; align-items: center; }
     .mobile-overlay-close { background: none; border: none; padding: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; min-height: unset; }

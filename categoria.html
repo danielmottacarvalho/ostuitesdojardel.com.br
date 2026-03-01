@@ -191,12 +191,15 @@
       width: 100%;
       height: 100%;
       background: #212121;
-      z-index: 999;
+      z-index: 1001;
       overflow-y: auto;
-      transform: translateY(-100%);
+      transform: translateX(100%);
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .mobile-overlay.open {
+      transform: translateX(0);
       transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .mobile-overlay.open { transform: translateY(0); }
 
     .mobile-overlay-inner {
       display: flex;
