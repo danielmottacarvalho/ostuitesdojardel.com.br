@@ -847,7 +847,7 @@
       .main-area { width: 100%; }
 
       .cat-title { font-size: 36px; }
-      .cat-title-mobile { display: block; }
+      .cat-title-mobile { display: block; margin-bottom: 12px; }
       .mobile-search-bar {
         display: flex;
         flex-direction: row;
@@ -988,7 +988,8 @@
     <!-- Main area -->
     <main class="main-area">
 
-      <!-- Mobile-only search bar -->
+      <!-- Mobile-only title + search bar (always visible, above both states) -->
+      <h2 class="cat-title-mobile" id="cat-title-mobile"></h2>
       <div class="mobile-search-bar">
         <input
           type="search"
@@ -1002,7 +1003,6 @@
 
       <!-- Browse state (default) -->
       <div class="browse-state" id="browse-state">
-        <h2 class="cat-title-mobile" id="cat-title-mobile"></h2>
         <div class="results-toolbar">
           <select class="sort-select" id="sort-select">
             <option value="mais-curtidos">Mais curtidos</option>
