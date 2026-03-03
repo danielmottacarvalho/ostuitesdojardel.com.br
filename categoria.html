@@ -1285,28 +1285,53 @@
   document.getElementById('sort-select').addEventListener('change', renderBrowse);
   document.getElementById('btn-load-more').addEventListener('click', loadMoreBrowse);
 
+  /* ── normalizeText ──────────────────────────────────────── */
+  function normalizeText(str) {
+    if (!str) return '';
+    return str
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  /* ── Precompute searchText on catTweets (once at load) ── */
+  const searchableTweets = catTweets.map(t => ({
+    ...t,
+    searchText: normalizeText(t.text),
+  }));
+
   /* ── Fuse.js search ─────────────────────────────────────── */
-  const fuse = new Fuse(catTweets, {
-    keys: ['text'],
-    threshold: 0.35,
-    distance: 200,
-    minMatchCharLength: 2,
+  const fuse = new Fuse(searchableTweets, {
+    keys: [{ name: 'searchText', weight: 1 }],
+    threshold: 0.3,
     ignoreLocation: true,
+    minMatchCharLength: 3,
+    includeScore: true,
   });
 
-  let searchResults = [];
-  let searchPage    = 0;
+  let searchResults  = [];
+  let searchPage     = 0;
+  let _debounceTimer = null;
 
-  function runSearch(q) {
-    q = q.trim();
+  function runSearch(qRaw) {
+    const q = normalizeText(qRaw);
     if (!q) {
       showBrowse();
       return;
     }
     showSearchState();
 
-    searchResults = fuse.search(q).map(r => r.item);
-    searchPage    = 0;
+    if (q.length < 3) {
+      // Short query: fast substring match, preserve original order
+      searchResults = searchableTweets.filter(t => t.searchText.includes(q));
+    } else {
+      // Long query: fuzzy match ranked by relevance
+      searchResults = fuse.search(q).map(r => r.item);
+    }
+
+    searchPage = 0;
 
     const meta   = document.getElementById('search-meta');
     const header = document.getElementById('search-header');
@@ -1317,7 +1342,7 @@
     header.classList.toggle('visible', count > 0);
 
     if (count > 0) {
-      meta.innerHTML = `Sua busca por <span class="search-header-term">"${esc(q)}"</span> deu <span class="search-header-term">${pluralTweet(count)}</span>.`;
+      meta.innerHTML = `Sua busca por <span class="search-header-term">"${esc(qRaw.trim())}"</span> deu <span class="search-header-term">${pluralTweet(count)}</span>.`;
       loadMoreSearch();
     }
   }
@@ -1351,17 +1376,23 @@
     document.getElementById('mobile-search').value = '';
   }
 
+  /* ── Debounced live search (150ms) ──────────────────────── */
+  function debouncedSearch(value) {
+    clearTimeout(_debounceTimer);
+    _debounceTimer = setTimeout(() => runSearch(value), 150);
+  }
+
   /* ── Sidebar search wiring ──────────────────────────────── */
   const sidebarInput = document.getElementById('sidebar-search');
   document.getElementById('sidebar-search-btn').addEventListener('click', () => runSearch(sidebarInput.value));
-  sidebarInput.addEventListener('keydown', e => { if (e.key === 'Enter') runSearch(sidebarInput.value); });
-  sidebarInput.addEventListener('input', e => { if (!e.target.value) showBrowse(); });
+  sidebarInput.addEventListener('keydown', e => { if (e.key === 'Enter') { clearTimeout(_debounceTimer); runSearch(sidebarInput.value); } });
+  sidebarInput.addEventListener('input', e => { debouncedSearch(e.target.value); });
 
   /* ── Mobile search wiring ───────────────────────────────── */
   const mobileInput = document.getElementById('mobile-search');
   document.getElementById('mobile-search-btn').addEventListener('click', () => runSearch(mobileInput.value));
-  mobileInput.addEventListener('keydown', e => { if (e.key === 'Enter') runSearch(mobileInput.value); });
-  mobileInput.addEventListener('input', e => { if (!e.target.value) showBrowse(); });
+  mobileInput.addEventListener('keydown', e => { if (e.key === 'Enter') { clearTimeout(_debounceTimer); runSearch(mobileInput.value); } });
+  mobileInput.addEventListener('input', e => { debouncedSearch(e.target.value); });
 
 
   /* ── Hamburger / Mobile Overlay ─────────────────────────── */
