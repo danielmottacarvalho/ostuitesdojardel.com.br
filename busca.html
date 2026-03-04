@@ -320,6 +320,64 @@
     }
     .no-results-link:hover { background: var(--blue); color: #fff; }
 
+    /* ── Retry search bar ── */
+    .retry-search-wrap {
+      display: flex;
+      justify-content: center;
+      padding: 32px 0 80px;
+    }
+    .retry-search {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      width: 600px;
+      max-width: 100%;
+    }
+    .retry-search-label {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 1.36;
+      text-align: center;
+      color: var(--grey-900);
+    }
+    .retry-input-wrap {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      align-self: stretch;
+      gap: 8px;
+      padding: 16px 24px;
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      background: var(--white);
+      transition: border-color 0.15s;
+    }
+    .retry-input-wrap:focus-within { border-color: var(--blue); }
+    .retry-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-family: var(--font-body);
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.272;
+      color: var(--grey-900);
+      background: transparent;
+    }
+    .retry-input::placeholder { color: var(--grey-400); }
+    .retry-submit {
+      display: flex;
+      align-items: center;
+      color: #CDE4F8;
+      transition: color 0.15s;
+      padding: 0;
+    }
+    .retry-input:not(:placeholder-shown) + .retry-submit { color: #2B8AE3; }
+    .retry-submit:hover { color: #2B8AE3; }
+
     /* Lightbox */
     .lb-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.88); z-index: 9000; align-items: center; justify-content: center; }
     .lb-overlay.open { display: flex; }
@@ -481,9 +539,17 @@
       </div>
     </div>
 
-    <!-- Retry button: shown when results found -->
-    <div class="results-retry-wrap" id="results-retry">
-      <a href="/" class="results-retry-link">Não era bem isso? Procure de novo</a>
+    <!-- Retry search: shown when results found -->
+    <div class="retry-search-wrap" id="results-retry" style="display:none;">
+      <div class="retry-search">
+        <p class="retry-search-label">Não era bem isso? Busque de novo.</p>
+        <div class="retry-input-wrap">
+          <input type="search" class="retry-input" id="retry-input" placeholder="Deve ter um tuíte sobre isso..." autocomplete="off" aria-label="Buscar tuítes">
+          <button class="retry-submit" id="retry-btn" aria-label="Buscar">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C9.62663 0 7.30655 0.703788 5.33316 2.02236C3.35977 3.34094 1.8217 5.21508 0.913451 7.4078C0.00519941 9.60051 -0.232441 12.0133 0.230582 14.3411C0.693605 16.6689 1.83649 18.807 3.51472 20.4853C5.19295 22.1635 7.33115 23.3064 9.65892 23.7694C11.9867 24.2324 14.3995 23.9948 16.5922 23.0865C18.7849 22.1783 20.6591 20.6402 21.9776 18.6668C23.2962 16.6934 24 14.3734 24 12C23.9966 8.81843 22.7313 5.76814 20.4816 3.51843C18.2319 1.26872 15.1816 0.00335979 12 0ZM16.3454 11.73C16.2597 11.8158 16.1579 11.8839 16.0458 11.9304C15.9337 11.9768 15.8136 12.0007 15.6923 12.0007C15.571 12.0007 15.4509 11.9768 15.3388 11.9304C15.2268 11.8839 15.125 11.8158 15.0392 11.73L12.9231 9.61269V16.6154C12.9231 16.8602 12.8258 17.095 12.6527 17.2681C12.4796 17.4412 12.2448 17.5385 12 17.5385C11.7552 17.5385 11.5204 17.4412 11.3473 17.2681C11.1742 17.095 11.0769 16.8602 11.0769 16.6154V9.61269L8.96077 11.73C8.78757 11.9032 8.55265 12.0005 8.3077 12.0005C8.06275 12.0005 7.82783 11.9032 7.65462 11.73C7.48141 11.5568 7.38411 11.3219 7.38411 11.0769C7.38411 10.832 7.48141 10.5971 7.65462 10.4238L11.3469 6.73154C11.4327 6.64571 11.5345 6.57763 11.6465 6.53117C11.7586 6.48472 11.8787 6.46081 12 6.46081C12.1213 6.46081 12.2414 6.48472 12.3535 6.53117C12.4655 6.57763 12.5674 6.64571 12.6531 6.73154L16.3454 10.4238C16.4312 10.5096 16.4993 10.6114 16.5457 10.7234C16.5922 10.8355 16.6161 10.9556 16.6161 11.0769C16.6161 11.1982 16.5922 11.3183 16.5457 11.4304C16.4993 11.5425 16.4312 11.6443 16.3454 11.73Z" fill="currentColor"/></svg>
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- No results state -->
@@ -492,7 +558,15 @@
       <div class="no-results-content">
         <h1 class="no-results-title">Dessa o Jardel escapou</h1>
         <p class="no-results-text">Nenhum tuíte encontrado. Como ele diria: nem tudo merece uma opinião.</p>
-        <a href="/" class="no-results-link">Me tira dessa</a>
+        <div class="retry-search" style="margin-top:16px;">
+          <p class="retry-search-label">Não era bem isso? Busque de novo.</p>
+          <div class="retry-input-wrap">
+            <input type="search" class="retry-input" id="no-results-input" placeholder="Deve ter um tuíte sobre isso..." autocomplete="off" aria-label="Buscar tuítes">
+            <button class="retry-submit" id="no-results-btn" aria-label="Buscar">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C9.62663 0 7.30655 0.703788 5.33316 2.02236C3.35977 3.34094 1.8217 5.21508 0.913451 7.4078C0.00519941 9.60051 -0.232441 12.0133 0.230582 14.3411C0.693605 16.6689 1.83649 18.807 3.51472 20.4853C5.19295 22.1635 7.33115 23.3064 9.65892 23.7694C11.9867 24.2324 14.3995 23.9948 16.5922 23.0865C18.7849 22.1783 20.6591 20.6402 21.9776 18.6668C23.2962 16.6934 24 14.3734 24 12C23.9966 8.81843 22.7313 5.76814 20.4816 3.51843C18.2319 1.26872 15.1816 0.00335979 12 0ZM16.3454 11.73C16.2597 11.8158 16.1579 11.8839 16.0458 11.9304C15.9337 11.9768 15.8136 12.0007 15.6923 12.0007C15.571 12.0007 15.4509 11.9768 15.3388 11.9304C15.2268 11.8839 15.125 11.8158 15.0392 11.73L12.9231 9.61269V16.6154C12.9231 16.8602 12.8258 17.095 12.6527 17.2681C12.4796 17.4412 12.2448 17.5385 12 17.5385C11.7552 17.5385 11.5204 17.4412 11.3473 17.2681C11.1742 17.095 11.0769 16.8602 11.0769 16.6154V9.61269L8.96077 11.73C8.78757 11.9032 8.55265 12.0005 8.3077 12.0005C8.06275 12.0005 7.82783 11.9032 7.65462 11.73C7.48141 11.5568 7.38411 11.3219 7.38411 11.0769C7.38411 10.832 7.48141 10.5971 7.65462 10.4238L11.3469 6.73154C11.4327 6.64571 11.5345 6.57763 11.6465 6.53117C11.7586 6.48472 11.8787 6.46081 12 6.46081C12.1213 6.46081 12.2414 6.48472 12.3535 6.53117C12.4655 6.57763 12.5674 6.64571 12.6531 6.73154L16.3454 10.4238C16.4312 10.5096 16.4993 10.6114 16.5457 10.7234C16.5922 10.8355 16.6161 10.9556 16.6161 11.0769C16.6161 11.1982 16.5922 11.3183 16.5457 11.4304C16.4993 11.5425 16.4312 11.6443 16.3454 11.73Z" fill="currentColor"/></svg>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -609,7 +683,7 @@
         `Sua busca por <span class="results-term">"${esc(q)}"</span> trouxe ${n.toLocaleString('pt-BR')} resultado${n !== 1 ? 's' : ''}. Jardel aprovaria sua curiosidade, mas não necessariamente você.`;
       document.getElementById('results-header').classList.add('visible');
       document.getElementById('results-card').classList.add('visible');
-      document.getElementById('results-retry').classList.add('visible');
+      document.getElementById('results-retry').style.display = 'flex';
       renderResults();
     }
   } else {
@@ -646,6 +720,23 @@
 
   document.getElementById('sort-select').addEventListener('change', renderResults);
   document.getElementById('btn-load-more').addEventListener('click', loadMore);
+
+  /* ── Retry search bars ── */
+  function goSearch(q) {
+    q = (q || '').trim();
+    if (!q) return;
+    window.location.href = 'busca.html?q=' + encodeURIComponent(q);
+  }
+  const retryInput = document.getElementById('retry-input');
+  if (retryInput) {
+    document.getElementById('retry-btn').addEventListener('click', () => goSearch(retryInput.value));
+    retryInput.addEventListener('keydown', e => { if (e.key === 'Enter') goSearch(retryInput.value); });
+  }
+  const noResultsInput = document.getElementById('no-results-input');
+  if (noResultsInput) {
+    document.getElementById('no-results-btn').addEventListener('click', () => goSearch(noResultsInput.value));
+    noResultsInput.addEventListener('keydown', e => { if (e.key === 'Enter') goSearch(noResultsInput.value); });
+  }
 
   /* ── Lightbox ── */
   const lbOverlay = document.getElementById('lb-overlay');

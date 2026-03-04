@@ -1313,15 +1313,14 @@
   /* ── Fuse.js search ─────────────────────────────────────── */
   const fuse = new Fuse(searchableTweets, {
     keys: [{ name: 'searchText', weight: 1 }],
-    threshold: 0.3,
+    threshold: 0.25,
     ignoreLocation: true,
     minMatchCharLength: 3,
     includeScore: true,
   });
 
-  let searchResults  = [];
-  let searchPage     = 0;
-  let _debounceTimer = null;
+  let searchResults = [];
+  let searchPage    = 0;
 
   function runSearch(qRaw) {
     const q = normalizeText(qRaw);
@@ -1384,23 +1383,15 @@
     document.getElementById('mobile-search').value = '';
   }
 
-  /* ── Debounced live search (150ms) ──────────────────────── */
-  function debouncedSearch(value) {
-    clearTimeout(_debounceTimer);
-    _debounceTimer = setTimeout(() => runSearch(value), 150);
-  }
-
   /* ── Sidebar search wiring ──────────────────────────────── */
   const sidebarInput = document.getElementById('sidebar-search');
   document.getElementById('sidebar-search-btn').addEventListener('click', () => runSearch(sidebarInput.value));
-  sidebarInput.addEventListener('keydown', e => { if (e.key === 'Enter') { clearTimeout(_debounceTimer); runSearch(sidebarInput.value); } });
-  sidebarInput.addEventListener('input', e => { debouncedSearch(e.target.value); });
+  sidebarInput.addEventListener('keydown', e => { if (e.key === 'Enter') runSearch(sidebarInput.value); });
 
   /* ── Mobile search wiring ───────────────────────────────── */
   const mobileInput = document.getElementById('mobile-search');
   document.getElementById('mobile-search-btn').addEventListener('click', () => runSearch(mobileInput.value));
-  mobileInput.addEventListener('keydown', e => { if (e.key === 'Enter') { clearTimeout(_debounceTimer); runSearch(mobileInput.value); } });
-  mobileInput.addEventListener('input', e => { debouncedSearch(e.target.value); });
+  mobileInput.addEventListener('keydown', e => { if (e.key === 'Enter') runSearch(mobileInput.value); });
 
 
   /* ── Hamburger / Mobile Overlay ─────────────────────────── */
