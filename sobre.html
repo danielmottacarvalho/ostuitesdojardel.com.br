@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-G478FEJVC7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-G478FEJVC7');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meu amigo Jardel — Os tuítes do Jardel</title>
+  <!-- Favicon & Webclip -->
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  <link rel="apple-touch-icon" href="images/webclip.png">
+  <!-- OpenGraph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Os tuítes do Jardel">
+  <meta property="og:title" content="Os tuítes do Jardel">
+  <meta property="og:description" content="Prolífico tuíteiro, Jardel Sebba deixou saudades e 15.587 tuítes.">
+  <meta property="og:image" content="https://ostuitesdojardel.com/images/OpenGraphImage.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:url" content="https://ostuitesdojardel.com/sobre.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Goudy+Bookletter+1911&family=Google+Sans:wght@400;500;700&family=Google+Sans+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; }
+    button { cursor: pointer; border: none; background: none; }
+
+    :root {
+      --bg:          #F6F4F2;
+      --black:       #0A0A0A;
+      --grey-900:    #212121;
+      --grey-800:    #424242;
+      --grey-600:    #757575;
+      --grey-500:    #9E9E9E;
+      --grey-400:    #BDBDBD;
+      --white:       #FFFFFF;
+      --border:      #E0E0E0;
+      --blue:        #2B8AE3;
+      --blue-bg:     #E6F4FE;
+      --font-display: 'Goudy Bookletter 1911', Georgia, serif;
+      --font-body:    'Google Sans', system-ui, -apple-system, sans-serif;
+      --font-code:    'Google Sans Code', 'Courier New', monospace;
+      --header-h: 96px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--grey-900);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page { max-width: 1440px; margin: 0 auto; display: flex; flex-direction: column; padding-top: var(--header-h); }
+
+    /* ── Header ── */
+    .header {
+      display: flex; flex-direction: row; justify-content: space-between; align-items: center;
+      width: 100%; padding: 24px 56px; gap: 24px;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background-color: rgba(246, 244, 242, 0.82);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    }
+    .logo { display: inline-flex; align-items: center; }
+    .logo img { height: 48px; width: auto; display: block; }
+    .nav { display: flex; flex-direction: row; align-items: center; gap: 24px; }
+    .nav a, .nav-cat-trigger {
+      font-size: 16px; font-weight: 400; letter-spacing: -0.02em;
+      color: var(--grey-900); text-decoration: none;
+      background: none; border: none; cursor: pointer; padding: 0;
+      font-family: var(--font-body);
+    }
+    .nav a:hover, .nav-cat-trigger:hover,
+    .nav a.active, .nav-cat-trigger.active { font-weight: 700; }
+
+    /* Hamburger */
+    .hamburger { display: none; flex-direction: column; justify-content: center; align-items: center; gap: 5px; width: 32px; height: 32px; cursor: pointer; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--grey-900); border-radius: 2px; transition: transform 0.2s, opacity 0.2s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ── Mega menu ── */
+    .mega-menu {
+      position: fixed; top: var(--header-h); right: 56px; z-index: 999;
+      width: fit-content; background: #FFFFFF; border-radius: 8px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.12); padding: 32px;
+      opacity: 0; transform: translateY(-8px); pointer-events: none;
+      transition: opacity 0.18s ease-in, transform 0.18s ease-in;
+    }
+    .mega-menu.open { opacity: 1; transform: translateY(0); pointer-events: auto; transition: opacity 0.2s ease-out, transform 0.2s ease-out; }
+    .mega-title { font-family: var(--font-display); font-size: 24px; font-weight: 400; color: var(--grey-900); margin: 0 0 32px; line-height: 1.2; }
+    .mega-grid { display: grid; grid-template-columns: repeat(3, 200px); gap: 8px; }
+    .mega-item {
+      display: flex; flex-direction: column; align-items: flex-start; gap: 8px;
+      width: 200px; padding: 16px; border-radius: 8px; color: var(--grey-900);
+      text-decoration: none; background: transparent; transition: background 0.15s ease, color 0.15s ease;
+    }
+    .mega-item:hover { background: #E1EEF8; color: #2B8AE3; }
+    .mega-item:focus-visible { outline: 2px solid #2B8AE3; outline-offset: 2px; border-radius: 8px; }
+    .mega-item:hover .mega-item-label { color: #2B8AE3; }
+    .mega-item:hover .mega-icon img { filter: invert(39%) sepia(72%) saturate(1500%) hue-rotate(196deg) brightness(95%); }
+    .mega-icon { width: 20px; height: 20px; flex-shrink: 0; }
+    .mega-item-label { font-size: 14px; font-weight: 700; line-height: 1.366; letter-spacing: -0.01em; color: var(--grey-900); transition: color 0.15s ease; }
+
+    /* ── Mobile overlay ── */
+    .mobile-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: #212121; z-index: 1001; overflow-y: auto;
+      transform: translateX(100%);
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .mobile-overlay.open { transform: translateX(0); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    .mobile-overlay-inner { display: flex; flex-direction: column; gap: 24px; padding: 56px 40px; min-height: 100%; }
+    .mobile-overlay-top { display: flex; justify-content: flex-end; align-items: center; }
+    .mobile-overlay-close { background: none; border: none; padding: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; min-height: unset; }
+    .mobile-overlay-section { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+    .mobile-overlay-logo { padding-bottom: 32px; }
+    .mobile-overlay-logo img { height: 56px; width: auto; filter: brightness(0) invert(1); }
+    .mobile-overlay-heading { font-family: var(--font-display); font-weight: 400; font-size: 40px; line-height: 1.36em; letter-spacing: -0.01em; color: #FFFFFF; text-decoration: none; display: block; min-height: auto; }
+    .mobile-overlay-cat-items { display: flex; flex-direction: column; gap: 24px; padding-left: 12px; }
+    .mobile-overlay-cat-items a { font-family: var(--font-body); font-weight: 500; font-size: 18px; line-height: 1.272em; letter-spacing: -0.01em; color: #FFFFFF; text-decoration: none; display: block; min-height: auto; }
+    .mobile-overlay-cat-items a:hover, a.mobile-overlay-heading:hover { opacity: 0.7; }
+
+    /* ── Main content ── */
+    .main-wrap {
+      max-width: 800px; width: 100%;
+      margin: 0 auto;
+      padding: 0 56px;
+    }
+
+    /* ── Sobre content ── */
+    .sobre-content {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 80px 0 120px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sobre-title {
+      font-family: var(--font-display);
+      font-size: 64px;
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--grey-900);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .sobre-byline {
+      font-family: var(--font-body);
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--grey-600);
+      text-align: center;
+    }
+
+    /* ── Photo blocks ── */
+    .sobre-photo-block {
+      display: flex;
+      flex-direction: column;
+      margin-top: 32px;
+    }
+
+    .sobre-photo {
+      width: 100%;
+      height: auto;
+    }
+
+    .sobre-photo-caption {
+      font-family: var(--font-code);
+      font-size: 12px;
+      font-weight: 400;
+      color: #757575;
+      margin-top: 8px;
+    }
+
+    /* ── Body text ── */
+    .sobre-body {
+      margin-top: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .sobre-body p {
+      font-family: var(--font-body);
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.6;
+      color: var(--grey-800);
+    }
+
+    /* Mid-article photo: extra 16px on each side so gap+margin = 32px */
+    .sobre-photo-block--mid {
+      margin-top: 16px;
+      margin-bottom: 16px;
+    }
+
+    /* Footer */
+    .footer { display: flex; flex-direction: column; align-items: center; padding: 56px; background: var(--grey-900); width: 100%; }
+    .footer-main { display: flex; flex-direction: row; justify-content: space-between; align-items: flex-start; gap: 56px; width: 100%; }
+    .footer-logo { display: inline-flex; align-items: center; }
+    .footer-logo img { height: 48px; width: auto; display: block; filter: brightness(0) invert(1); }
+    .footer-links { display: flex; flex-direction: row; gap: 56px; flex: 1; justify-content: flex-end; }
+    .footer-col { display: flex; flex-direction: column; }
+    .footer-col-header { font-size: 14px; font-weight: 700; color: var(--grey-400); margin-bottom: 4px; }
+    .footer-col a { font-size: 14px; font-weight: 500; line-height: 2em; color: var(--bg); }
+    .footer-col a:hover { font-weight: 700; }
+    .footer-disclaimer { font-family: var(--font-body); font-size: 14px; font-weight: 400; color: #BDBDBD; text-align: center; margin-top: 48px; width: 100%; }
+    .footer-disclaimer a { font-weight: 500; color: #BDBDBD; text-decoration: none; }
+    .footer-disclaimer a:hover { color: #e0e0e0; text-decoration: underline; }
+
+    /* Responsive */
+    @media (max-width: 1023px) {
+      :root { --header-h: 88px; }
+      .header { padding: 20px 32px; }
+      .main-wrap { padding: 0 40px; }
+    }
+    @media (max-width: 767px) {
+      :root { --header-h: 80px; }
+      a { min-height: 48px; display: inline-flex; align-items: center; }
+      .header { padding: 16px 24px; }
+      .nav { display: none; }
+      .hamburger { display: flex; }
+      .mega-menu { display: none !important; }
+      .main-wrap { padding: 0 24px; }
+      .sobre-content { padding: 48px 0 80px; }
+      .sobre-title { font-size: 36px; line-height: 1.2; }
+      .footer { padding: 40px 24px; }
+      .footer-main { flex-direction: column; gap: 32px; }
+      .footer-links { flex-direction: column; gap: 0; }
+      .footer-disclaimer { margin-top: 32px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <header class="header">
+    <a href="/" class="logo">
+      <img src="images/logo.svg" alt="Os tuítes do Jardel">
+    </a>
+    <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav">
+      <button class="nav-cat-trigger" id="nav-cat-trigger" aria-haspopup="true" aria-expanded="false" aria-controls="mega-menu">Categorias</button>
+      <a href="sobre.html" class="active">Meu amigo Jardel</a>
+      <a href="sobre-jardel.html">Sobre o site</a>
+    </nav>
+  </header>
+
+  <!-- Mega menu -->
+  <div class="mega-menu" id="mega-menu" role="navigation" aria-labelledby="mega-title">
+    <h2 class="mega-title" id="mega-title">Navegue por categoria</h2>
+    <div class="mega-grid">
+      <a href="categoria.html?cat=Jardel" class="mega-item">
+        <div class="mega-icon"><img src="images/icons/icon-jardel.svg" width="20" height="20" alt=""></div>
+        <span class="mega-item-label">Jardel sendo Jardel</span>
+      </a>
+      <a href="categoria.html?cat=Música" class="mega-item">
+        <div class="mega-icon"><img src="images/icons/icon-musica.svg" width="20" height="20" alt=""></div>
+        <span class="mega-item-label">Música</span>
+      </a>
+      <a href="categoria.html?cat=Futebol" class="mega-item">
+        <div class="mega-icon"><img src="images/icons/icon-futebol.svg" width="20" height="20" alt=""></div>
+        <span class="mega-item-label">Futebol</span>
+      </a>
+      <a href="categoria.html?cat=Política" class="mega-item">
+        <div class="mega-icon"><img src="images/icons/icon-politica.svg" width="20" height="20" alt=""></div>
+        <span class="mega-item-label">Política</span>
+      </a>
+      <a href="categoria.html?cat=Televisão" class="mega-item">
+        <div class="mega-icon"><img src="images/icons/icon-tv.svg" width="20" height="20" alt=""></div>
+        <span class="mega-item-label">Televisão</span>
+      </a>
+      <a href="categoria.html?cat=Jornalismo" class="mega-item">
+        <div class="mega-icon"><img src="images/icons/icon-jornalismo.svg" width="20" height="20" alt=""></div>
+        <span class="mega-item-label">Jornalismo</span>
+      </a>
+      <a href="categoria.html?cat=São Paulo" class="mega-item">
+        <div class="mega-icon"><img src="images/icons/icon-saopaulo.svg" width="20" height="20" alt=""></div>
+        <span class="mega-item-label">São Paulo</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Mobile overlay -->
+  <div class="mobile-overlay" id="mobile-overlay" aria-hidden="true">
+    <div class="mobile-overlay-inner">
+      <div class="mobile-overlay-top">
+        <button class="mobile-overlay-close" id="mobile-overlay-close" aria-label="Fechar menu">
+          <svg width="32" height="32" viewBox="263 0 32 32" fill="none"><path d="M294.531 29.2673C294.68 29.4159 294.798 29.5924 294.878 29.7866C294.959 29.9808 295 30.189 295 30.3992C295 30.6094 294.959 30.8176 294.878 31.0118C294.798 31.206 294.68 31.3825 294.531 31.5311C294.382 31.6798 294.206 31.7977 294.012 31.8781C293.818 31.9586 293.609 32 293.399 32C293.189 32 292.981 31.9586 292.787 31.8781C292.592 31.7977 292.416 31.6798 292.267 31.5311L279 18.2619L265.733 31.5311C265.433 31.8313 265.025 32 264.601 32C264.176 32 263.769 31.8313 263.469 31.5311C263.169 31.2309 263 30.8238 263 30.3992C263 29.9746 263.169 29.5675 263.469 29.2673L276.738 16L263.469 2.73274C263.169 2.43253 263 2.02536 263 1.6008C263 1.17624 263.169 0.769072 263.469 0.468863C263.769 0.168655 264.176 0 264.601 0C265.025 0 265.433 0.168655 265.733 0.468863L279 13.7381L292.267 0.468863C292.567 0.168655 292.975 -8.36906e-09 293.399 0C293.824 8.36906e-09 294.231 0.168655 294.531 0.468863C294.831 0.769072 295 1.17624 295 1.6008C295 2.02536 294.831 2.43253 294.531 2.73274L281.262 16L294.531 29.2673Z" fill="#F5F2EF"/></svg>
+        </button>
+      </div>
+      <div class="mobile-overlay-section">
+        <div class="mobile-overlay-logo">
+          <a href="/"><img src="images/logo.svg" alt="Os tuítes do Jardel"></a>
+        </div>
+        <span class="mobile-overlay-heading">Categorias</span>
+        <nav class="mobile-overlay-cat-items">
+          <a href="categoria.html?cat=Jardel">Jardel sendo Jardel</a>
+          <a href="categoria.html?cat=Música">Música</a>
+          <a href="categoria.html?cat=Futebol">Futebol</a>
+          <a href="categoria.html?cat=Política">Política</a>
+          <a href="categoria.html?cat=Televisão">Televisão</a>
+          <a href="categoria.html?cat=Jornalismo">Jornalismo</a>
+          <a href="categoria.html?cat=São Paulo">São Paulo</a>
+        </nav>
+      </div>
+      <div class="mobile-overlay-section">
+        <a href="sobre.html" class="mobile-overlay-heading">Meu amigo Jardel</a>
+      </div>
+      <div class="mobile-overlay-section">
+        <a href="sobre-jardel.html" class="mobile-overlay-heading">Sobre o site</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <div class="main-wrap">
+    <div class="sobre-content">
+
+      <h1 class="sobre-title">Um amigo de contrastes</h1>
+      <p class="sobre-byline">Por Daniel Motta.</p>
+
+      <!-- First photo -->
+      <div class="sobre-photo-block">
+        <img src="images/jardel-daniel.webp" alt="Jardel e eu na minha casa" class="sobre-photo">
+        <p class="sobre-photo-caption">Jardel e eu na minha casa, Abril de 2016</p>
+      </div>
+
+      <!-- Body text -->
+      <div class="sobre-body">
+
+        <p>A redação da Playboy foi, de longe, o melhor lugar em que trabalhei na vida. As madrugadas adentro em fechamento eram compensadas com folga por estar rodeado de gente talentosa, inteligente e engraçada. O whisky importado que rolava nessas ocasiões também ajudava. Whisky esse, sempre patrocinado pelo Jardel.</p>
+
+        <p>A minha mesa era quase de frente para a dele mas era raríssimo conseguir vê-lo por detrás das montanhas de livros, CDs e revistas que tomavam conta de seu cubículo.</p>
+
+        <p>Sempre que chovia muito em São Paulo, o trânsito virava um caos ainda maior do que o normal e, todas as vezes em que isso acontecia, pintava uma matéria no noticiário no estilo "E a volta do paulistano pra casa foi complicada", a gente ria e apontava a mesma matéria escrita pela milésima vez.</p>
+
+        <p>Jardel observava esse fenômeno com muita atenção. Tem um tuíte muito bom dele nesse tema: "Só que ama o Estadão entende: eles fazem um caderno especial sobre o aniversário de São Paulo e o primeiro título é LOCOMOTIVA DO BRASIL."</p>
+
+        <p>Outro clichê bastante popular era o "Terra de contrastes". Sempre encontrávamos algo que variava entre um tema bastante amplo, como "Brasil, terra de contrastes" ou algo mais local tipo "Serra da Bocaina, terra de contrastes". Uma vez, no caderno de bares e restaurantes da Playboy, colocamos a legenda "Um prato de contrastes" em alguma iguaria que misturava doce com salgado.</p>
+
+        <p>Jardel que me perdoe o clichê, mas "Jardel, Um Homem de Contrastes" seria um título adequado para ele. Digo isso porque, dentre todas as coisas que lhe eram caras, havia uma que sempre me intrigou: astrologia.</p>
+
+        <p>Ele levava os signos zodiacais muito mais a sério do que me parecia razoável. Mas não estou reclamando, nem falando mal do Jards. Conhecendo-o como conheci, acho que foi essa coincidência astral que selou nossa amizade lá em 2002. Assim como ele, eu sou de câncer. Nasci em 25 de junho e ele, em 19 de julho.</p>
+
+        <p>Éramos muito parecidos em muita coisa mesmo. A gente gostava das mesmas bandas — Suede, Placebo, Slayer e Danzig. Um gosto musical de contrastes. Gostávamos também dos mesmos bares, drinks e livros. Chegamos a morar na mesma avenida, ainda que em épocas diferentes. Avenida Rouxinol, em Moema, bairro favorito do Jards. Bem, nessa parte a gente discordava. Só ele mesmo achava Moema legal.</p>
+
+        <p>A primeira vez que conversamos foi na porta da Torre do Dr. Zero, uma balada que ficava na Mourato Coelho. Naquela época ainda era permitido fumar dentro de bares, mas mesmo assim saí com ele pra fumar na rua. Eu não fumo, nunca fumei, mas me vi nessa mesma situação dezenas de vezes nos 20 anos seguintes. A conversa com o Jardel era sempre tão bacana que valia a pena o transtorno de sair pra rua só pra não deixar o assunto morrer.</p>
+
+        <p>Em 2005, fui trabalhar na Editora Abril. Logo depois, ele também virou abriliano e foi muito legal ter esse contato diariamente. Em 2008, ficamos ainda mais próximos: entrei na Playboy e passamos de amigos para colegas. Como já estabelecemos, a Playboy foi o melhor lugar em que trabalhei e o Jardel foi grande parte disso.</p>
+
+        <p>Jardel era engraçado, peculiar. Tinha obsessão por coisas e eu diria que era levemente acumulador. Em sua casa, era fácil encontrar todos os volumes da Enciclopédia Barsa completa que o acompanhava desde os anos 80. E não é que estavam entulhados na despensa pegando pó — estavam todos exibindo suas lombadas carcomidas e letras douradas que já viram dias melhores.</p>
+
+        <p>Também estava ali o CD de estreia da Tiazinha e os Cavaleiros Mascarados. Há um verso na música "Merda de Bar", da banda Comunidade Nin-Jitsu: "A minha calça de roqueiro é apertada / Na carteira porcarias que não servem para nada." O quarto do Jardel era cheio de porcarias que não servem para nada. Inclusive esse CD da Comunidade Nin-Jitsu.</p>
+
+        <!-- Mid-article photo -->
+        <div class="sobre-photo-block sobre-photo-block--mid">
+          <img src="images/jardel-marco-daniel.webp" alt="Jardel, Marco Bezzi e eu" class="sobre-photo">
+          <p class="sobre-photo-caption">Jardel, Marco Bezzi e eu. As paredes desse quarto eram forradas por esses porta-CDs.</p>
+        </div>
+
+        <p>A verdade é que considero o Jardel um dos melhores amigos que já tive, mas existe todo um lado da vida dele que nunca conheci. Jardel cresceu no Rio de Janeiro morando com a mãe. Formou-se em Goiás e tem família por parte do pai por lá, mas, assim como sua vida no Rio, pouco sei a respeito dessa parte da vida dele. Uma vez, conheci a irmã dele em uma festa.</p>
+
+        <p>Eu sei que isso é absolutamente normal — muitos dos meus amigos não sabem esse tipo de detalhe sobre a minha vida também. Mas me lembro de como foi estranho ler que ele era torcedor do Vila Nova de Goiás. "Um torcedor apaixonado do Tigrão", postou o clube em suas redes. Ou ainda que era conhecido como Jardelzinho pelos amigos e familiares. Eu sempre achei que o Jardel era Flamengo.</p>
+
+        <p>Ainda no terreno de contrastes, ele adorava editar o caderno de moda da Playboy. Camiseta de banda era seu uniforme, sempre com uma combinação meio esquisita como sapato social. Mesmo assim, sempre que tinha oportunidade, ele fechava esse caderno — para infiltrar algum cavalo de Tróia. Como na vez em que fizemos um especial sobre tênis e o título foi "Inveja do Tênis". Ou quando a editora de moda entregou um texto com o título "O branco voltou" e ele não se conformava: "Onde é que o branco estava? Quem parou de usar roupa branca?"</p>
+
+        <p>Jardel tinha suas birras com pessoas completamente aleatórias. Meu favorito era o Albertinho da publicidade — o cara que chegava uma vez por mês na redação pra garantir que havia espaço suficiente para os anunciantes. Só isso. Jardel odiava o Albertinho. Eventualmente, quando havia mais anúncios do que o previsto, precisava reeditar ou derrubar alguma matéria e esse trabalho geralmente caía nas mãos do Jardel, que naquela época estava na base da cadeia alimentar dos editores da revista. Talvez essa seja a origem do ódio irracional pelo pobre coitado, que era apenas o mensageiro.</p>
+
+        <p>Em 2017, me mudei para Medellín, na Colômbia. Voltei algumas vezes para visitar amigos e família em São Paulo. Na última vez que estive por lá, Jardel foi a última pessoa que vi. Ele fez questão de me levar uma sacola cheia de porcarias que não servem para nada na casa do meu irmão, onde eu estava hospedado, e me dar um último abraço antes da minha volta.</p>
+
+        <p>Em 2018, recebi uma mensagem no Facebook do porteiro do prédio dele, algo que me pareceu muito esquisito. O rapaz se identificou e me perguntou se eu sabia do Jardel — de acordo com ele, o Jards não aparecia em casa há 4 ou 5 dias. Achei que era golpe.</p>
+
+        <p>Acontece que ele tinha uma rotina de cumprimentar o porteiro todos os dias e, quando se ausentava por muito tempo, sempre deixava a chave pra que ele alimentasse seus gatos, Sid e Nancy. Mas dessa vez, nada. O rapaz tocou a campainha, ouviu os gatos miando. Preocupado, foi buscar no Facebook amigos em comum — e acabei sendo um dos que ele contatou.</p>
+
+        <p>De alguma forma, alguém conseguiu contatar a família e descobriram que ele havia sido internado por causa de um abscesso. Parece grave, pensei, mas ao mesmo tempo, nada tão grave assim. Até onde eu sei, essa foi a primeira manifestação do câncer. Ou pelo menos, a primeira vez em que se percebeu isso.</p>
+
+        <p>Minha filha, Laura, havia nascido poucas semanas antes desse episódio. O Jards sempre foi muito interessado nela — perguntava a respeito e mandava, como sempre, porcarias que não servem para nada de presente. Mas, justiça seja feita, ele deu a ela uma tiara que ela ama e usa até hoje. Mandou também pôster do Black Sabbath pra ela.</p>
+
+        <p>Em 2019, me mudei para Helsinque, Finlândia, e mesmo à distância continuamos nos falando com frequência. Em mais de uma ocasião, fui a um show por aqui e liguei pra ele assim que cheguei em casa pra contar como havia sido. Foi assim no show do Suede e no show do Placebo. Aliás, por uma dessas coincidências, o Suede está tocando de novo aqui em Helsinque enquanto escrevo esse texto. Mas vou passar dessa vez.</p>
+
+        <p>Foi nessa época que as coisas começaram a ficar mais complicadas. Ele falava pouco sobre a doença comigo, e eu sempre entendi que, quando conversávamos, o assunto deveria ser mais leve pra não pesar ainda mais as coisas.</p>
+
+        <p>Em dezembro de 2021 fui a São Paulo mas, no dia em que cheguei, ele me mandou uma mensagem dizendo que havia contraído COVID e que não poderia receber visitas. Felizmente conseguimos nos ver de novo. Fui até a casa dele com Marco Bezzi na noite anterior à minha volta à Finlândia e nos vimos pessoalmente pela última vez, em janeiro de 2022.</p>
+
+        <p>Foi uma clássica noite na casa do Jardel: música alta com a televisão ligada ao mesmo tempo, um monte de coisa em cima da mesa e bebidas maravilhosas. Ele tinha muito orgulho de seu bar e fazia questão de só ter bebida boa em casa. A única vez que tomei um Johnnie Walker Blue Label foi por intermédio do Jards.</p>
+
+        <p>Eu estava no ponto de ônibus quando a Adriana me ligou pra me contar que ele havia morrido. Eu não chorei na hora nem depois. Eu havia chorado poucos dias antes, quando ele me mandou um áudio no WhatsApp. A voz estava muito cansada e fraca. Ali foi quando eu entendi que havia pouco tempo mesmo.</p>
+
+        <p>Pouco depois de sua morte, tive a ideia de guardar todos os seus tuítes. Em parte porque ele era muito engraçado — mas também porque o Twitter mostrava o talento dele de uma forma bem particular: Jardel era muito bom escrevendo perfis e matérias de fôlego, mas era capaz de manter a mesma essência em apenas 140 caracteres (depois, em 2017, o limite passou pra 280). Minha motivação era simples: não queria que a voz de um dos meus melhores amigos se perdesse.</p>
+
+        <p>Enquanto escrevo esse texto, em março de 2026, a conta do Jardel no Twitter (agora X) segue ativa. Mas vai saber por quanto tempo? E, mesmo que continue ativa para sempre, o Twitter foi concebido para o que está acontecendo agora, não exatamente para ser um bom arquivo.</p>
+
+        <p>Neste site eu quis transformar esse material em algo buscável e navegável por temas e palavras-chave. Plataformas mudam. Algoritmos mudam. Serviços acabam. Memória digital é mais frágil do que parece. Fiz tudo isso com o máximo respeito possível — minha ideia nunca foi substituir a experiência original do Twitter; é apenas uma tentativa de preservar o que importava.</p>
+
+        <p>O Jardel morreu, mas que privilégio foi ter essa amizade por 20 e poucos anos. Eu espero que você encontre aqui nesses 15.587 tuítes algo que faça sentido pra você. E se você nunca ouviu falar do Jardel antes, aproveite pra buscar a opinião dele sobre qualquer assunto que te interesse. É bem provável que ele tenha uma para oferecer.</p>
+
+        <p>Uma das piadas que tenho com a Adriana é que você sabe quando qualquer coisa é uma merda quando foi feita com "carinho". Mas vou dizer assim mesmo: fiz esse site com muito carinho. Tudo bem, eu sou canceriano.</p>
+
+      </div>
+    </div>
+  </div>
+
+</div><!-- /.page -->
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-main">
+    <a href="/" class="footer-logo">
+      <img src="images/logo.svg" alt="Os tuítes do Jardel">
+    </a>
+    <div class="footer-links">
+      <div class="footer-col">
+        <span class="footer-col-header">Categorias</span>
+        <a href="categoria.html?cat=Jardel">Jardel sendo Jardel</a>
+        <a href="categoria.html?cat=Música">Música</a>
+        <a href="categoria.html?cat=Futebol">Futebol</a>
+        <a href="categoria.html?cat=Política">Política</a>
+        <a href="categoria.html?cat=Televisão">Televisão</a>
+        <a href="categoria.html?cat=Jornalismo">Jornalismo</a>
+        <a href="categoria.html?cat=São Paulo">São Paulo</a>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-header">Sobre</span>
+        <a href="sobre.html">Meu amigo Jardel</a>
+        <a href="sobre-jardel.html">Sobre o site</a>
+      </div>
+    </div>
+  </div>
+  <p class="footer-disclaimer">Jardel aprovaria este site. Provavelmente. Feito mesmo assim por <a href="https://www.motta.works/" target="_blank" rel="noopener noreferrer">Daniel Motta</a>.</p>
+</footer>
+
+<script>
+  /* ── Hamburger / Mobile Overlay ── */
+  const hamburger    = document.getElementById('hamburger');
+  const overlay      = document.getElementById('mobile-overlay');
+  const overlayClose = document.getElementById('mobile-overlay-close');
+
+  function openOverlay() {
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    hamburger.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeOverlay() {
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    hamburger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  hamburger.addEventListener('click', openOverlay);
+  overlayClose.addEventListener('click', closeOverlay);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeOverlay(); });
+
+  /* ── Mega menu ── */
+  const navTrigger = document.getElementById('nav-cat-trigger');
+  const megaMenu   = document.getElementById('mega-menu');
+  let megaIsOpen   = false;
+
+  function openMega() {
+    megaMenu.classList.add('open');
+    navTrigger.setAttribute('aria-expanded', 'true');
+    navTrigger.classList.add('active');
+    megaIsOpen = true;
+  }
+  function closeMega(returnFocus) {
+    megaMenu.classList.remove('open');
+    navTrigger.setAttribute('aria-expanded', 'false');
+    navTrigger.classList.remove('active');
+    megaIsOpen = false;
+    if (returnFocus) navTrigger.focus();
+  }
+
+  navTrigger.addEventListener('click', () => { megaIsOpen ? closeMega(false) : openMega(); });
+  document.addEventListener('click', e => {
+    if (megaIsOpen && !megaMenu.contains(e.target) && !navTrigger.contains(e.target)) closeMega(false);
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && megaIsOpen) closeMega(true); });
+</script>
+
+</body>
+</html>
