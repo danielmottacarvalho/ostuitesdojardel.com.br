@@ -924,10 +924,15 @@
       .mobile-search-bar {
         display: flex;
         flex-direction: row;
-        gap: 8px;
+        gap: 4px;
         align-items: center;
         margin-bottom: 16px;
+        border: 1px solid var(--border);
+        border-radius: 9999px;
+        background: var(--white);
+        padding: 0 6px 0 12px;
       }
+      .mobile-search-bar:focus-within { border-color: var(--blue); }
       .results-toolbar { flex-wrap: wrap; gap: 10px; }
       .tweet-text { font-size: 16px; }
 
