@@ -740,6 +740,45 @@
       font-weight: 500;
     }
 
+    .search-header-body {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .search-cat-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .search-filter-label {
+      font-family: var(--font-code);
+      font-size: 13px;
+      color: var(--grey-600);
+    }
+
+    .search-filter-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      border: none;
+      background: var(--bg);
+      font-family: var(--font-code);
+      font-size: 13px;
+      color: var(--grey-600);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .search-filter-chip.active,
+    .search-filter-chip:hover {
+      background: var(--blue-bg);
+      color: var(--blue);
+    }
+
     /* No results card */
     .no-results-card {
       display: none;
@@ -1065,7 +1104,10 @@
       <div class="search-state" id="search-state">
         <div class="search-header-card" id="search-header">
           <img src="images/jardel-top.png" alt="Jardel Sebba" class="search-header-photo">
-          <p class="search-header-msg" id="search-meta"></p>
+          <div class="search-header-body">
+            <p class="search-header-msg" id="search-meta"></p>
+            <div class="search-cat-filters" id="search-cat-filters"></div>
+          </div>
         </div>
         <div id="search-list"></div>
         <div class="no-results-card" id="no-results">
@@ -1318,8 +1360,8 @@
       .trim();
   }
 
-  /* ── Precompute searchText on catTweets (once at load) ── */
-  const searchableTweets = catTweets.map(t => ({
+  /* ── Precompute searchText on allTweets (once at load) ── */
+  const searchableTweets = allTweets.map(t => ({
     ...t,
     searchText: normalizeText(t.text),
   }));
@@ -1333,8 +1375,49 @@
     includeScore: true,
   });
 
-  let searchResults = [];
-  let searchPage    = 0;
+  let allSearchResults = [];
+  let activeCatFilter  = null;
+  let searchResults    = [];
+  let searchPage       = 0;
+
+  function renderCatFilters() {
+    const container = document.getElementById('search-cat-filters');
+    if (!allSearchResults.length) { container.innerHTML = ''; return; }
+    const counts = {};
+    for (const t of allSearchResults) {
+      counts[t.category] = (counts[t.category] || 0) + 1;
+    }
+    const cats = Object.keys(counts).sort();
+    let html = '<span class="search-filter-label">Categorias:</span>';
+    html += `<button class="search-filter-chip${activeCatFilter === null ? ' active' : ''}" data-cat="">Todos (${allSearchResults.length})</button>`;
+    for (const cat of cats) {
+      html += `<button class="search-filter-chip${activeCatFilter === cat ? ' active' : ''}" data-cat="${esc(cat)}">${esc(cat)} (${counts[cat]})</button>`;
+    }
+    container.innerHTML = html;
+  }
+
+  function applyFilter() {
+    searchResults = activeCatFilter === null
+      ? allSearchResults
+      : allSearchResults.filter(t => t.category === activeCatFilter);
+    searchPage = 0;
+    document.getElementById('search-list').innerHTML = '';
+    const count  = searchResults.length;
+    const hasAll = allSearchResults.length > 0;
+    document.getElementById('no-results').classList.toggle('visible', hasAll && count === 0);
+    document.getElementById('search-header').classList.toggle('visible', hasAll);
+    if (count > 0) {
+      loadMoreSearch();
+    }
+  }
+
+  document.getElementById('search-cat-filters').addEventListener('click', e => {
+    const chip = e.target.closest('.search-filter-chip');
+    if (!chip) return;
+    activeCatFilter = chip.dataset.cat || null;
+    renderCatFilters();
+    applyFilter();
+  });
 
   function runSearch(qRaw) {
     const q = normalizeText(qRaw);
@@ -1345,27 +1428,17 @@
     showSearchState();
 
     if (q.length < 3) {
-      // Short query: fast substring match, preserve original order
-      searchResults = searchableTweets.filter(t => t.searchText.includes(q));
+      allSearchResults = searchableTweets.filter(t => t.searchText.includes(q));
     } else {
-      // Long query: fuzzy match ranked by relevance
-      searchResults = fuse.search(q).map(r => r.item);
+      allSearchResults = fuse.search(q).map(r => r.item);
     }
 
-    searchPage = 0;
+    activeCatFilter = null;
 
-    const meta   = document.getElementById('search-meta');
-    const header = document.getElementById('search-header');
-    const count  = searchResults.length;
-
-    document.getElementById('search-list').innerHTML = '';
-    document.getElementById('no-results').classList.toggle('visible', count === 0);
-    header.classList.toggle('visible', count > 0);
-
-    if (count > 0) {
-      meta.innerHTML = `Sua busca por <span class="search-header-term">"${esc(qRaw.trim())}"</span> deu <span class="search-header-term">${pluralTweet(count)}</span>.`;
-      loadMoreSearch();
-    }
+    const meta = document.getElementById('search-meta');
+    meta.innerHTML = `<span class="search-header-term">${pluralTweet(allSearchResults.length)}</span> para <span class="search-header-term">"${esc(qRaw.trim())}"</span>`;
+    renderCatFilters();
+    applyFilter();
   }
 
   function loadMoreSearch() {
