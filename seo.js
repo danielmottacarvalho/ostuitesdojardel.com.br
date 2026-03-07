@@ -181,10 +181,11 @@
     var headline = title.split(' — ')[0];
 
     injectLD('ld-article', {
-      '@context': 'https://schema.org',
-      '@type':    'Article',
-      'headline': headline,
-      'url':      canonical,
+      '@context':       'https://schema.org',
+      '@type':          'Article',
+      'headline':       headline,
+      'url':            canonical,
+      'datePublished':  '2026-03-03',
       'author':   { '@type': 'Person', 'name': 'Daniel Motta' },
       'about':    { '@type': 'Person', 'name': 'Jardel Sebba' },
       'isPartOf': { '@type': 'WebSite', 'name': 'Os Tuítes do Jardel', 'url': BASE + '/' }
